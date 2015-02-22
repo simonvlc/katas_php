@@ -8,3 +8,4 @@
     cp ../prime_numbers/Gulpfile.js .
     composer install
     npm install gulp gulp-phpspec gulp-notify gulp-run gulp-plumber --save-dev
+    vendor/phpspec/phpspec/bin/phpspec describe StringCalculator
