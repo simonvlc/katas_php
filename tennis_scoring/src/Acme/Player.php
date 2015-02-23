@@ -5,6 +5,7 @@ namespace Acme;
 class Player
 {
     public $name;
+
     public $points;
 
     public function __construct($name, $points)
@@ -17,5 +18,4 @@ class Player
     {
         $this->points = $points;
     }
-
 }

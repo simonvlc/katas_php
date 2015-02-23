@@ -4,9 +4,10 @@ namespace Acme;
 
 class Tennis
 {
-
     protected $player1;
+
     protected $player2;
+
     protected $lookup = array(
         0 => "Love",
         1 => "Fifteen",
@@ -23,13 +24,17 @@ class Tennis
     public function score()
     {
 
-        if ($this->someoneAlreadyWon()) return $this->leadingPlayerName() . " wins the match";
+        if ($this->someoneAlreadyWon()) 
+            return $this->leadingPlayerName() . " wins the match";
 
-        if ($this->someoneHasAdvantage()) return $this->leadingPlayerName() . " has the advantage";
+        if ($this->someoneHasAdvantage()) 
+            return $this->leadingPlayerName() . " has the advantage";
         
-        if ($this->gameIsInDeuce()) return "Deuce";
+        if ($this->gameIsInDeuce()) 
+            return "Deuce";
 
-        if ($this->gameIsTied()) return $this->lookup[$this->player1->points] . "-All";
+        if ($this->gameIsTied()) 
+            return $this->lookup[$this->player1->points] . "-All";
 
         return $this->regularScore();
         
@@ -58,7 +63,8 @@ class Tennis
 
     private function someoneAlreadyWon()
     {
-        return (max($this->player1->points, $this->player2->points) >= 4 && $this->isSomeoneLeading() >= 2);
+        return (max($this->player1->points, $this->player2->points) >= 4 &&
+            $this->isSomeoneLeading() >= 2);
     }
 
     private function isSomeoneLeading()
@@ -68,7 +74,8 @@ class Tennis
 
     private function leadingPlayerName()
     {
-        return ($this->player1->points > $this->player2->points ? $this->player1->name : $this->player2->name);
+        return ($this->player1->points > $this->player2->points ? 
+            $this->player1->name : $this->player2->name);
     }
 
     private function someoneHasAdvantage()
