@@ -3,75 +3,35 @@
 class StringCalculator
 {
 
-    protected $input_strings = array();
-    protected $result = 0;
-    protected static $number_to_string_array = array(
-        0 => "0",
-        1 => "1",
-        2 => "2",
-        3 => "3",
-        4 => "4",
-        5 => "5",
-        6 => "6",
-        7 => "7",
-        8 => "8",
-        9 => "9"
-    );
+    const MAX_NUMBER_ALLOWED = 1000;
 
-    public function add($string)
-    {
-        $this->input_strings = explode (",", $string);
-    }
-
-    public function calculates()
+    public function add($numbers)
     {
 
         $result = 0;
 
-        if (!$this->stringsToConvert())
+        $numbers = $this->extractNumbersFromString($numbers);
+
+        foreach ($numbers as $number)
         {
-            return 0;   
-        }
+            
+            $this->guardAgainsNegativeNumbers($number);
 
-        for ($string=0; $string < count($this->stringsToConvert()) ; $string++) 
-        { 
+            if ($number >= self::MAX_NUMBER_ALLOWED) continue;
 
-            $string_length = strlen($this->stringToConvert($string));
-
-            for ($char = 0; $char < $string_length; $char++) { 
-
-                $multiplier = pow (10, $string_length - 1 - $char);
-                
-                foreach (self::$number_to_string_array as $number => $character) 
-                {
-
-                    if ($this->charToConvert($string, $char) == $character)
-                    {
-                        
-                        $result += (int) ($number * $multiplier);
-                    }
-                }
-
-            }
-
+            $result += $number;
         }
 
         return $result;
     }
 
-    private function stringsToConvert()
+    private function guardAgainsNegativeNumbers($number)
     {
-        return $this->input_strings;
+        if ($number < 0) throw new Exception("We don't deal with negative numbers");
     }
 
-    private function stringToConvert($index)
+    private function extractNumbersFromString($numbers)
     {
-        return $this->input_strings[$index];
+        return preg_split('/\s*(,|\\\n)\s*/', $numbers);
     }
-
-    private function charToConvert($index, $char)
-    {
-        return $this->input_strings[$index][$char];
-    }
-
 }

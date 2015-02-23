@@ -7,50 +7,39 @@ use Prophecy\Argument;
 
 class StringCalculatorSpec extends ObjectBehavior
 {
-    function it_adds_zero_strings()
+
+    function it_adds_an_empty_string_to_zero()
     {
-        $this->calculates()->shouldReturn(0);
+        $this->add('')->shouldEqual(0);
     }
 
-    function it_adds_1()
+    function it_adds_a_string_1_for_1()
     {
-        $this->add('1');
-        $this->calculates()->shouldReturn(1);
+        $this->add('1')->shouldEqual(1);
     }
 
-    function it_adds_1_and_2()
+    function it_adds_two_strings_1_and_2_for_3()
     {
-        $this->add('1,2');
-        $this->calculates()->shouldReturn(3);
+        $this->add('1,2')->shouldEqual(3);
     }
 
-    function it_adds_1_and_2_and_3()
+    function it_adds_three_strings_1_2_3_for_6()
     {
-        $this->add('1,2,3');
-        $this->calculates()->shouldReturn(6);
+        $this->add('1,2,3')->shouldEqual(6);
     }
 
-    function it_adds_10_and_1()
+    function it_should_ignore_numbers_greater_than_1000()
     {
-        $this->add('10,1');
-        $this->calculates()->shouldReturn(11);  
+        $this->add('1,2,1000')->shouldEqual(3);
     }
 
-    function it_adds_11_and_1()
+    function it_should_throw_an_exception_if_we_add_a_negative_number()
     {
-        $this->add('22,1');
-        $this->calculates()->shouldReturn(23);  
+        $this->shouldThrow('\Exception')->duringAdd('1,-2,3');
     }
 
-    function it_adds_25_and_20()
-    {
-        $this->add('25,20');
-        $this->calculates()->shouldReturn(45);  
-    }
-
-    function it_adds_111_and_11_and_1()
-    {
-        $this->add('111,11,1');
-        $this->calculates()->shouldReturn(123);
-    }
+    // function it_accepts_a_new_line_as_separator()
+    // {
+    //     $this->add('1\n2')->shouldEqual(3);
+    // }
 }
