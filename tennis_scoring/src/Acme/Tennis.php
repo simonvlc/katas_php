@@ -4,105 +4,75 @@ namespace Acme;
 
 class Tennis
 {
-    const PLAYER_A = 0;
-    const PLAYER_B = 1;
 
-    protected $score = array(0,0);
-    protected $translations = array(
+    protected $player1;
+    protected $player2;
+    protected $lookup = array(
         0 => "Love",
         1 => "Fifteen",
         2 => "Thirty",
-        3 => "Forty",
-        4 => "Advantage",
-        5 => "Winner"
+        3 => "Forty"
         );
+
+    public function __construct(Player $player1, Player $player2)
+    {
+        $this->player1 = $player1;
+        $this->player2 = $player2;
+    }
 
     public function score()
     {
 
-        return $this->translateScore($this->score);
+        if ($this->someoneAlreadyWon()) return $this->leadingPlayerName() . " wins the match";
 
+        if ($this->someoneHasAdvantage()) return $this->leadingPlayerName() . " has the advantage";
+        
+        if ($this->gameIsInDeuce()) return "Deuce";
+
+        if ($this->gameIsTied()) return $this->lookup[$this->player1->points] . "-All";
+
+        return $this->regularScore();
+        
     }
 
-    public function addPointToPlayerA()
+    private function gameIsTied()
     {
-
-        $this->score[self::PLAYER_A] += 1;
-
+        return $this->player1->points == $this->player2->points;
     }
 
-    public function addPointToPlayerB()
+    private function gameIsInDeuce()
     {
-
-        $this->score[self::PLAYER_B] += 1;
-
+        return $this->sixOrMorePointsScored() && $this->gameIsTied();
     }
 
-    private function translateScore($score)
+    private function regularScore()
     {
-
-        foreach ($this->translations as $key => $translation) 
-
-        {
-
-            if ($this->score[self::PLAYER_A] == $key) 
-            {
-
-                $this->translateScorePlayerA($this->score, $translation);
-
-            }
-
-            if ($this->score[self::PLAYER_B] == $key) 
-            {
-
-                $this->translateScorePlayerB($this->score, $translation);
-
-            }
-            
-            if ($this->score[self::PLAYER_A] == $this->score[self::PLAYER_B])
-            {
-
-                $this->translateTie($this->score);
-
-            }
-
-
-        }
-
-        return $this->score;
+        return $this->lookup[$this->player1->points] . "-" .
+            $this->lookup[$this->player2->points];
     }
 
-    private function translateScorePlayerA($score, $translation)
+    private function sixOrMorePointsScored()
     {
-
-        $this->score[self::PLAYER_A] = $translation;
-
+        return $this->player1->points + $this->player2->points >= 6;
     }
 
-    private function translateScorePlayerB($score, $translation)
+    private function someoneAlreadyWon()
     {
-
-        $this->score[self::PLAYER_B] = $translation;
-
+        return (max($this->player1->points, $this->player2->points) >= 4 && $this->isSomeoneLeading() >= 2);
     }
 
-    private function translateTie($score)
+    private function isSomeoneLeading()
     {
-
-        if ($this->score[self::PLAYER_A] == 3) // if deuce
-        {
-
-            $this->score[self::PLAYER_A] = "Deuce";
-            $this->score[self::PLAYER_B] = "";
-
-        }
-
-        else
-        {   
-
-            $this->score[self::PLAYER_B] = 'All';
-
-        }   
+        return abs($this->player1->points - $this->player2->points);
     }
 
+    private function leadingPlayerName()
+    {
+        return ($this->player1->points > $this->player2->points ? $this->player1->name : $this->player2->name);
+    }
+
+    private function someoneHasAdvantage()
+    {
+        return $this->sixOrMorePointsScored() && $this->isSomeoneLeading();
+    }
 }
