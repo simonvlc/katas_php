@@ -17,29 +17,22 @@ class BowlingGame
         $index = 0;
         $score = 0;
 
-        for ($frame = 1; $frame <= 10 ; $frame++) {             
+        for ($frame = 1; $frame <= 10 ; $frame++) {
 
-            if ($this->isStrike($index)) // strike
-            {   
+            if ($this->isStrike($index)) {
                 $score += 10 + $this->strikeBonus($index);
                 $index += 1;
-            }
-
-            elseif ($this->isSpare($index)) // spare
-            {
+            } elseif ($this->isSpare($index)) {
                 $score += 10 + $this->spareBonus($index);
                 $index += 2;
-            }
-
-            else 
-            {
+            } else {
                 $score += $this->defaultScore($index);
                 $index += 2;
             }
 
         }
 
-        return $score;        
+        return $score;
     }
 
     private function isStrike($index)

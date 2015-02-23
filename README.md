@@ -3,9 +3,10 @@
     # quick-start-kata
     mkdir string_calculator
     cd string_calculator
-    cp ../prime_numbers/*.png .
-    cp ../prime_numbers/composer.json .
-    cp ../prime_numbers/Gulpfile.js .
+    cp ../tennis_scoring/*.png .
+    cp ../tennis_scoring/composer.json .
+    cp ../tennis_scoring/Gulpfile.js .
+    cp ../tennis_scoring/phpspec.yml .
     composer install
     npm install gulp gulp-phpspec gulp-notify gulp-run gulp-plumber --save-dev
     vendor/phpspec/phpspec/bin/phpspec describe StringCalculator

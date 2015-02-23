@@ -12,13 +12,9 @@ class StringCalculator
 
         $numbers = $this->extractNumbersFromString($numbers);
 
-        foreach ($numbers as $number)
-        {
-            
+        foreach ($numbers as $number) {
             $this->guardAgainsNegativeNumbers($number);
-
             if ($number >= self::MAX_NUMBER_ALLOWED) continue;
-
             $result += $number;
         }
 

@@ -38,8 +38,4 @@ class StringCalculatorSpec extends ObjectBehavior
         $this->shouldThrow('\Exception')->duringAdd('1,-2,3');
     }
 
-    // function it_accepts_a_new_line_as_separator()
-    // {
-    //     $this->add('1\n2')->shouldEqual(3);
-    // }
 }
