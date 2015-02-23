@@ -3,9 +3,10 @@
 class StringCalculator
 {
 
-    protected $strings = array();
+    protected $input_strings = array();
     protected $result = 0;
     protected static $number_to_string_array = array(
+        0 => "0",
         1 => "1",
         2 => "2",
         3 => "3",
@@ -14,38 +15,63 @@ class StringCalculator
         6 => "6",
         7 => "7",
         8 => "8",
-        9 => "9",
-        10 => "10"
+        9 => "9"
     );
 
     public function add($string)
     {
-        $this->strings = explode (",", $string);
+        $this->input_strings = explode (",", $string);
     }
 
     public function calculates()
     {
 
-        $this->result = 0;
+        $result = 0;
 
-        if (empty($this->strings))
+        if (!$this->stringsToConvert())
         {
             return 0;   
         }
 
-        for ($i=0; $i < count($this->strings) ; $i++) 
+        for ($string=0; $string < count($this->stringsToConvert()) ; $string++) 
         { 
 
-            foreach (self::$number_to_string_array as $number => $string) 
-            {
-                if ($this->strings[$i] == $string)
+            $string_length = strlen($this->stringToConvert($string));
+
+            for ($char = 0; $char < $string_length; $char++) { 
+
+                $multiplier = pow (10, $string_length - 1 - $char);
+                
+                foreach (self::$number_to_string_array as $number => $character) 
                 {
-                    $this->result += $number;
+
+                    if ($this->charToConvert($string, $char) == $character)
+                    {
+                        
+                        $result += (int) ($number * $multiplier);
+                    }
                 }
+
             }
 
         }
 
-        return $this->result;
+        return $result;
     }
+
+    private function stringsToConvert()
+    {
+        return $this->input_strings;
+    }
+
+    private function stringToConvert($index)
+    {
+        return $this->input_strings[$index];
+    }
+
+    private function charToConvert($index, $char)
+    {
+        return $this->input_strings[$index][$char];
+    }
+
 }

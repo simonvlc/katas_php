@@ -36,9 +36,21 @@ class StringCalculatorSpec extends ObjectBehavior
         $this->calculates()->shouldReturn(11);  
     }
 
-    // function it_adds_25_and_20()
-    // {
-    //     $this->add('25,20');
-    //     $this->calculates()->shouldReturn(45);  
-    // }
+    function it_adds_11_and_1()
+    {
+        $this->add('22,1');
+        $this->calculates()->shouldReturn(23);  
+    }
+
+    function it_adds_25_and_20()
+    {
+        $this->add('25,20');
+        $this->calculates()->shouldReturn(45);  
+    }
+
+    function it_adds_111_and_11_and_1()
+    {
+        $this->add('111,11,1');
+        $this->calculates()->shouldReturn(123);
+    }
 }
