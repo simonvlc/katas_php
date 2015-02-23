@@ -3,7 +3,7 @@
 class RomanNumberConverter
 {
 
-    protected static $roman_keys = array(
+    protected static $lookup = array(
         1000 => "M",
         900 => "CM",
         500 => "D",
@@ -24,10 +24,8 @@ class RomanNumberConverter
 
         $result = "";
 
-        foreach (self::$roman_keys as $num_value => $glyph) 
-        {
-            while ($number >= $num_value) 
-            {
+        foreach (self::$lookup as $num_value => $glyph) {
+            while ($number >= $num_value) {
                 $result .= $glyph;
                 $number -= $num_value;
             }
