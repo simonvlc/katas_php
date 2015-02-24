@@ -2,11 +2,11 @@
 
 Collection of different solved (or not) phpspec katas.
 
-# How to start a kata
+## Quick start of one of this katas
 
 See https://github.com/simonvlc/katas_phpspec/blob/master/_template/README.md.
 
-# References
+## References
 
 * http://www.phpspec.net/
 * https://laracasts.com/lessons/phpspec-is-so-good
