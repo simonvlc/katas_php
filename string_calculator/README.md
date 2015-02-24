@@ -41,9 +41,8 @@ String Calculator
 allowed” - and the negative that was passed. If there are multiple negatives,
 show all of them in the exception message.
 
----
-Stop here if you are a beginner. Continue if you can finish the steps so far in
-less than 30 minutes.
+_Stop here if you are a beginner. Continue if you can finish the steps so far in
+less than 30 minutes._
 
 6. Numbers bigger than 1000 should be ignored, so adding 2 + 1001  = 2.
 
