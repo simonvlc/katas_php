@@ -1,12 +1,15 @@
-# katas_php
+# phpspec katas
 
-    # quick-start-kata
-    mkdir string_calculator
-    cd string_calculator
-    cp ../tennis_scoring/*.png .
-    cp ../tennis_scoring/composer.json .
-    cp ../tennis_scoring/Gulpfile.js .
-    cp ../tennis_scoring/phpspec.yml .
-    composer install
-    npm install gulp gulp-phpspec gulp-notify gulp-run gulp-plumber --save-dev
-    vendor/phpspec/phpspec/bin/phpspec describe StringCalculator
+Collection of different solved (or not) phpspec katas.
+
+# How to start a kata
+
+See https://github.com/simonvlc/katas_phpspec/blob/master/_template/README.md.
+
+# References
+
+http://www.phpspec.net/
+https://laracasts.com/lessons/phpspec-is-so-good
+https://laracasts.com/series/code-katas-in-php
+http://codingdojo.org/cgi-bin/index.pl?KataCatalogue
+https://github.com/garora/TDD-Katas
