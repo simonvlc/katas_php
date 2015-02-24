@@ -5,14 +5,16 @@ Original: http://osherove.com/tdd-kata-1/
 The following is a TDD Kata- an exercise in coding, refactoring and test-first,
 that you should apply daily for at least 15 minutes (I do 30).
 
-Before you start:
+**Before you start**
 
 * Try not to read ahead.
 * Do one task at a time. The trick is to learn to work incrementally.
 * Make sure you only test for correct inputs. There is no need to test for
 invalid inputs for this kata.
+* Do the first five steps if you are a beginner. Continue if you can finish the
+steps so far in less than 30 minutes._
 
-String Calculator
+**Steps**
 
 1. Create a simple String calculator with a method int Add(string numbers).
   1. The method can take 0, 1 or 2 numbers, and will return their sum (for an
@@ -40,9 +42,6 @@ String Calculator
 5. Calling Add with a negative number will throw an exception “negatives not
 allowed” - and the negative that was passed. If there are multiple negatives,
 show all of them in the exception message.
-
-_Stop here if you are a beginner. Continue if you can finish the steps so far in
-less than 30 minutes._
 
 6. Numbers bigger than 1000 should be ignored, so adding 2 + 1001  = 2.
 
