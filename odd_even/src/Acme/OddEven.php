@@ -10,8 +10,8 @@ class OddEven
 
         if ($this->isPrime($number)) return $number;
 
-        if ($number % 2 != 0) return "Even";
-        else return "Odd";
+        if ($number % 2 != 0) return "Odd";
+        else return "Even";
 
     }
 

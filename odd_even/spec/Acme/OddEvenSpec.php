@@ -8,14 +8,14 @@ use Prophecy\Argument;
 class OddEvenSpec extends ObjectBehavior
 {
 
-    function it_returns_even_given_an_even_number()
+    function it_returns_Even_given_an_even_number()
     {
-        $this->translate(9)->shouldReturn("Even");
+        $this->translate(4)->shouldReturn("Even");
     }
 
-    function it_returns_odd_given_an_odd_number()
+    function it_returns_Odd_given_an_odd_number()
     {
-        $this->translate(4)->shouldReturn("Odd");
+        $this->translate(9)->shouldReturn("Odd");
     }
 
     function it_returns_3_given_a_prime_3()
@@ -35,7 +35,8 @@ class OddEvenSpec extends ObjectBehavior
 
     function it_translates_a_sequece_of_numbers_up_to_10()
     {
-        $this->translateUpTo(10)->shouldReturn(array(1, 2, 3, "Odd", 5, "Odd", 7, "Odd", "Even", "Odd"));
+        $this->translateUpTo(10)->shouldReturn(array(
+            1, 2, 3, "Even", 5, "Even", 7, "Even", "Odd", "Even"));
     }
 
 }
