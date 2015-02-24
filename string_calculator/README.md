@@ -1,6 +1,6 @@
 # StringCalculator phpspec kata
 
-Original: http://osherove.com/tdd-kata-1/
+*Original: http://osherove.com/tdd-kata-1/*
 
 The following is a TDD Kata- an exercise in coding, refactoring and test-first,
 that you should apply daily for at least 15 minutes (I do 30).
@@ -11,7 +11,7 @@ that you should apply daily for at least 15 minutes (I do 30).
 * Do one task at a time. The trick is to learn to work incrementally.
 * Make sure you only test for correct inputs. There is no need to test for
 invalid inputs for this kata.
-* Do the first five steps if you are a beginner. Continue if you can finish the
+* Do the first 5 steps if you are a beginner. Continue if you can finish the
 steps so far in less than 30 minutes._
 
 **Steps**
