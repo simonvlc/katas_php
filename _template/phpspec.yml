@@ -1,0 +1,4 @@
+suites:
+  acme_suite:
+    namespace: Acme
+    pr4_prefix: Acme
