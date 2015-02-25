@@ -17,7 +17,7 @@ If in Deuce, when one player wins a point, it has the advantage. If the same pla
 So, we can deduct, that a player wins the game when he is over 40 (4 points) and is 2 points ahead of his opponent.
 
 
-*Alternate description of the rules per Wikipedia:* 
+**Alternate description of the rules per Wikipedia:**
 
 http://en.wikipedia.org/wiki/Tennis#Scoring
 
@@ -29,7 +29,7 @@ http://en.wikipedia.org/wiki/Tennis#Scoring
 
 4. If at least three points have been scored by each side and a player has one more point than his opponent, the score of the game is "advantage" for the player in the lead.
 
-*Example solutions*
+**Example solutions**
 
 * http://github.com/follesoe/TennisKataJava Example solution in Java from Trondheim Coding Dojo
 * http://bitbucket.org/alf.lervag/tenniskata Example solution in .NET from Trondheim Coding Dojo
