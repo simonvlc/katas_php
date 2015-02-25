@@ -2,9 +2,7 @@
 
 *Original: http://codingdojo.org/cgi-bin/index.pl?KataTennis*
 
-We should represent a Tennis match with the next properties.
-
-The score should be returned in tennis terms:
+We should represent a Tennis match with the next properties. The score should be returned in tennis terms:
 
 15-0 Fifteen-Love
 30-0 Thirty-Love
