@@ -4,11 +4,11 @@ namespace Acme;
 
 class Tennis
 {
-    protected $player1;
+    private $player1;
 
-    protected $player2;
+    private $player2;
 
-    protected $lookup = array(
+    private $lookup = array(
         0 => "Love",
         1 => "Fifteen",
         2 => "Thirty",
@@ -24,20 +24,20 @@ class Tennis
     public function score()
     {
 
-        if ($this->someoneAlreadyWon()) 
+        if ($this->someoneAlreadyWon())
             return $this->leadingPlayerName() . " wins the match";
 
-        if ($this->someoneHasAdvantage()) 
+        if ($this->someoneHasAdvantage())
             return $this->leadingPlayerName() . " has the advantage";
-        
-        if ($this->gameIsInDeuce()) 
+
+        if ($this->gameIsInDeuce())
             return "Deuce";
 
-        if ($this->gameIsTied()) 
+        if ($this->gameIsTied())
             return $this->lookup[$this->player1->points] . "-All";
 
         return $this->regularScore();
-        
+
     }
 
     private function gameIsTied()
@@ -74,7 +74,7 @@ class Tennis
 
     private function leadingPlayerName()
     {
-        return ($this->player1->points > $this->player2->points ? 
+        return ($this->player1->points > $this->player2->points ?
             $this->player1->name : $this->player2->name);
     }
 
