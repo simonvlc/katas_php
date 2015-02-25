@@ -7,7 +7,7 @@ class PokerHands
 
     public $hand1 = array();
     public $hand2 = array();
-    private $cardRank = array(
+    private $card_ranks = array(
         "A" => 14,
         "K" => 13,
         "Q" => 12,
@@ -29,7 +29,8 @@ class PokerHands
 
     public function getCardRank($card)
     {
-        foreach ($this->cardRank as $key => $value) {
+        foreach ($this->card_ranks as $key => $value) {
+            // if (substr($card, 0, 1) == $key)
             if (preg_match("/$key/", $card) == 1)
                 return $value;
         }
@@ -37,12 +38,12 @@ class PokerHands
 
     public function compareHands($hand1, $hand2)
     {
-        $handRank1 = $this->getHandRank($hand1); var_dump($handRank1);
-        $handRank2 = $this->getHandRank($hand2); var_dump($handRank2);
+        $hand_rank_1 = $this->getHandRank($hand1);
+        $hand_rank_2 = $this->getHandRank($hand2);
 
-        if ($handRank1 > $handRank2)
+        if ($hand_rank_1 > $hand_rank_2)
             return $hand1;
-        elseif ($handRank1 < $handRank2)
+        elseif ($hand_rank_1 < $hand_rank_2)
             return $hand2;
         else { // same handRank
             if ($this->getHighestCardRankInAHand($hand1) >
@@ -54,12 +55,12 @@ class PokerHands
 
     private function getHighestCardRankInAHand($cards)
     {
-        $highestRank = 0;
+        $highest_rank = 0;
         foreach ($cards as $card) {
-            if ($this->getCardRank($card) > $highestRank)
-                $highestRank = $this->getCardRank($card);
+            if ($this->getCardRank($card) > $highest_rank)
+                $highest_rank = $this->getCardRank($card);
         }
-        return $highestRank;
+        return $highest_rank;
     }
 
     private function hasAPair($cards)
@@ -125,10 +126,11 @@ class PokerHands
     private function handContainsAFullHouse($cards)
     {
 
-        $rankedHand = $this->convertCardsToRanks($cards);
+        $ranked_hand = $this->convertCardsToRanks($cards);
 
-        if ($this->hasOnlyTwoRanks($rankedHand) && $this->hasAPair($rankedHand))
+        if ($this->hasOnlyTwoRanks($ranked_hand) && $this->hasAPair($ranked_hand))
             return ; // this should check that there are not four of a kind
+        // probably it will work when we add the four of a kind condition
 
         return false;
     }
