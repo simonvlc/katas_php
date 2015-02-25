@@ -4,13 +4,13 @@
 
 We should represent a Tennis match with the next properties. The score should be returned in tennis terms:
 
-15-0 Fifteen-Love
-30-0 Thirty-Love
-40-0 Forty-Love
-0-0 Love-All
-15-15 Fifteen-All
-30-30 Thirty-All
-40-40 Deuce
+    15-0 Fifteen-Love
+    30-0 Thirty-Love
+    40-0 Forty-Love
+    0-0 Love-All
+    15-15 Fifteen-All
+    30-30 Thirty-All
+    40-40 Deuce
 
 If in Deuce, when one player wins a point, it has the advantage. If the same player, wins the next point, it wins the game. If not, they are back in Deuce.
 
