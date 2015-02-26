@@ -12,7 +12,7 @@ class PokerHands
         "K" => 13,
         "Q" => 12,
         "J" => 11,
-        "10" => 10,
+        "T" => 10,
         "9" => 9,
         "8" => 8,
         "7" => 7,
@@ -22,15 +22,6 @@ class PokerHands
         "3" => 3,
         "2" => 2,
         );
-
-    public function getCardRank($card)
-    {
-        foreach ($this->card_ranks as $key => $value) {
-            // if (substr($card, 0, 1) == $key)
-            if (preg_match("/$key/", $card) == 1)
-                return $value;
-        }
-    }
 
     public function compareHands($hand1, $hand2)
     {
@@ -49,6 +40,14 @@ class PokerHands
         }
     }
 
+    private function getCardRank($card)
+    {
+        foreach ($this->card_ranks as $key => $value) {
+            if (preg_match("/$key/", $card) == true)
+                return $value;
+        }
+    }
+
     private function getHighestCardRankInAHand($cards)
     {
         $ranked_cards = $this->convertCardsToRanks($cards);
@@ -62,21 +61,21 @@ class PokerHands
         }
     }
 
-    public function handContainsADoublePair($cards)
+    public function hasDoublePairs($cards)
     {
         if ($this->countPairs($cards) == 2) {
             return true;
         }
     }
 
-    private function handContainsTrips($cards)
+    private function hasTrips($cards)
     {
         if ($this->countDifferentRanks($cards) == 3 && $this->countPairs($cards) != 2) {
             return true;
         }
     }
 
-    private function handContainsAStraight($cards)
+    private function hasStraight($cards)
     {
         // check straight starting in ace
         $ordered_cards = $this->convertCardsToRanks($cards);
@@ -87,7 +86,7 @@ class PokerHands
         return true;
     }
 
-    private function handContainsAFlush($cards)
+    private function hasFlush($cards)
     {
         for ($i=0; $i < 1 ; $i++) {
             for ($j=$i + 1; $j < 5; $j++) {
@@ -97,7 +96,7 @@ class PokerHands
         return true;
     }
 
-    private function handContainsAFullHouse($cards)
+    private function hasFullHouse($cards)
     {
 
         if ($this->countDifferentRanks($cards) == 2 && $this->hasAPair($cards)) {
@@ -107,7 +106,7 @@ class PokerHands
         return false;
     }
 
-    public function handContainsFourOfAKind($cards)
+    public function hasPoker($cards)
     {
         if ($this->hasOnlyTwoRanks($cards)) {
             return true;
@@ -116,14 +115,14 @@ class PokerHands
 
     private function getHandRank($hand)
     {
-        if ($this->handContainsFourOfAKind($hand)) return 8;
-        if ($this->handContainsAFullHouse($hand)) return 7;
-        if ($this->handContainsAFlush($hand)) return 6;
-        if ($this->handContainsAStraight($hand)) return 5;
-        if ($this->handContainsTrips($hand)) return 4;
-        if ($this->handContainsADoublePair($hand)) return 3;
-        if ($this->hasAPair($hand)) return 2; // pair
-        return 1; // high card
+        if ($this->hasPoker($hand)) return 8;
+        if ($this->hasFullHouse($hand)) return 7;
+        if ($this->hasFlush($hand)) return 6;
+        if ($this->hasStraight($hand)) return 5;
+        if ($this->hasTrips($hand)) return 4;
+        if ($this->hasDoublePairs($hand)) return 3;
+        if ($this->hasAPair($hand)) return 2;
+        return 1;
     }
 
     private function getCardSuit($card)

@@ -7,25 +7,6 @@ use Prophecy\Argument;
 
 class PokerHandsSpec extends ObjectBehavior
 {
-    function it_calculates_a_rank_for_an_ace()
-    {
-        $this->getCardRank("Ah")->shouldEqual(14);
-    }
-
-    function it_calculates_a_rank_for_a_king()
-    {
-        $this->getCardRank("Kd")->shouldEqual(13);
-    }
-
-    function it_calculates_a_rank_for_a_3()
-    {
-        $this->getCardRank('3s')->shouldEqual(3);
-    }
-
-    function it_calculates_a_rank_for_a_2()
-    {
-        $this->getCardRank("2s")->shouldEqual(2);
-    }
 
     function it_compares_two_hands_for_high_card_ace()
     {
@@ -36,7 +17,7 @@ class PokerHandsSpec extends ObjectBehavior
 
     function it_compares_two_hands_for_high_card_10()
     {
-        $this->hand1 = array("2h", "3d", "5s", "9c", "10d");
+        $this->hand1 = array("2h", "3d", "5s", "9c", "Td");
         $this->hand2 = array("2c", "3h", "4s", "8c", "9h");
         $this->compareHands($this->hand1, $this->hand2)->shouldReturn($this->hand1);
     }
@@ -98,7 +79,9 @@ class PokerHandsSpec extends ObjectBehavior
         $this->compareHands($this->hand1, $this->hand2)->shouldReturn($this->hand2);
     }
 
-    // function it_compares_two_pairs_and_wins_the_highest_one()
+    function it_compares_two_pairs_and_wins_the_highest_one() {
+
+    }
     // function it_compares_two_equal_pairs_and_wins_the_highest_card()
     // function it_compares_two_double_pairs_and_wins_the_highest_one()
     // function it_compares_two_equal_double_pairs_and_wins_the_highest_card()
