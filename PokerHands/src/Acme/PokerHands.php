@@ -22,10 +22,6 @@ class PokerHands
         "3" => 3,
         "2" => 2,
         );
-    // private $handRank = array(
-    //     "HighCard" => 1,
-    //     "Pair" => 2
-    //     );
 
     public function getCardRank($card)
     {
@@ -55,56 +51,34 @@ class PokerHands
 
     private function getHighestCardRankInAHand($cards)
     {
-        $highest_rank = 0;
-        foreach ($cards as $card) {
-            if ($this->getCardRank($card) > $highest_rank)
-                $highest_rank = $this->getCardRank($card);
-        }
-        return $highest_rank;
+        $ranked_cards = $this->convertCardsToRanks($cards);
+        return max($ranked_cards);
     }
 
     private function hasAPair($cards)
     {
-        for ($i=0; $i < count($cards); $i++) {
-            for ($j=$i+1; $j < count($cards); $j++) {
-                if ($this->sameRank($cards[$i], $cards[$j]))
-                    return true;
-            }
+        if ($this->countPairs($cards) >= 1) {
+            return true;
         }
-        return false;
     }
 
     public function handContainsADoublePair($cards)
     {
-        $pair = 0;
-        for ($i = 0; $i < 5; $i++) {
-            for ($j = $i + 1; $j < 5; $j++) {
-                if ($this->sameRank($cards[$i], $cards[$j])) {
-                    $pair++;
-                    $i = $j;
-                    $j++;
-                    if ($pair == 2) return true;
-                }
-            }
+        if ($this->countPairs($cards) == 2) {
+            return true;
         }
-        return false;
     }
 
     private function handContainsTrips($cards)
     {
-        $trips = 0;
-        for ($i = 0; $i < 5; $i++) {
-            for ($j = $i + 1; $j < 5; $j++) {
-                if ($this->sameRank($cards[$i], $cards[$j]))
-                    $trips++;
-                    if ($trips == 3) return true;
-            }
+        if ($this->countDifferentRanks($cards) == 3 && $this->countPairs($cards) != 2) {
+            return true;
         }
-        return false;
     }
 
     private function handContainsAStraight($cards)
     {
+        // check straight starting in ace
         $ordered_cards = $this->convertCardsToRanks($cards);
         sort($ordered_cards);
         for ($i=0; $i < 4 ; $i++) {
@@ -126,17 +100,23 @@ class PokerHands
     private function handContainsAFullHouse($cards)
     {
 
-        $ranked_hand = $this->convertCardsToRanks($cards);
-
-        if ($this->hasOnlyTwoRanks($ranked_hand) && $this->hasAPair($ranked_hand))
-            return ; // this should check that there are not four of a kind
-        // probably it will work when we add the four of a kind condition
+        if ($this->countDifferentRanks($cards) == 2 && $this->hasAPair($cards)) {
+            return true ;
+        }
 
         return false;
     }
 
+    public function handContainsFourOfAKind($cards)
+    {
+        if ($this->hasOnlyTwoRanks($cards)) {
+            return true;
+        }
+    }
+
     private function getHandRank($hand)
     {
+        if ($this->handContainsFourOfAKind($hand)) return 8;
         if ($this->handContainsAFullHouse($hand)) return 7;
         if ($this->handContainsAFlush($hand)) return 6;
         if ($this->handContainsAStraight($hand)) return 5;
@@ -174,4 +154,24 @@ class PokerHands
     {
         return count(array_unique($cards)) == 2;
     }
+
+    private function countDifferentRanks($cards)
+    {
+        $ranked_cards = $this->convertCardsToRanks($cards);
+        return count(array_unique($ranked_cards));
+    }
+
+    private function countPairs($cards)
+    {
+        $count = 0;
+        for ($i=0; $i < count($cards); $i++) {
+            for ($j=$i+1; $j < count($cards); $j++) {
+                if ($this->sameRank($cards[$i], $cards[$j])) {
+                    $count++;
+                }
+            }
+        }
+        return $count;
+    }
+
 }
