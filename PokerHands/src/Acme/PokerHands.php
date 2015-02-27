@@ -40,17 +40,9 @@ class PokerHands
         }
     }
 
-    private function getCardRank($card)
-    {
-        foreach ($this->card_ranks as $key => $value) {
-            if (preg_match("/$key/", $card) == true)
-                return $value;
-        }
-    }
-
     private function getHighestCardRankInAHand($cards)
     {
-        $ranked_cards = $this->convertCardsToRanks($cards);
+        $ranked_cards = $this->getRanks($cards);
         return max($ranked_cards);
     }
 
@@ -70,7 +62,7 @@ class PokerHands
 
     private function hasTrips($cards)
     {
-        if ($this->countDifferentRanks($cards) == 3 && $this->countPairs($cards) != 2) {
+        if ($this->countRanks($cards) == 3 && $this->countPairs($cards) != 2) {
             return true;
         }
     }
@@ -78,7 +70,7 @@ class PokerHands
     private function hasStraight($cards)
     {
         // check straight starting in ace
-        $ordered_cards = $this->convertCardsToRanks($cards);
+        $ordered_cards = $this->getRanks($cards);
         sort($ordered_cards);
         for ($i=0; $i < 4 ; $i++) {
             if ($ordered_cards[$i+1] - $ordered_cards[$i] > 1) return false;
@@ -88,27 +80,21 @@ class PokerHands
 
     private function hasFlush($cards)
     {
-        for ($i=0; $i < 1 ; $i++) {
-            for ($j=$i + 1; $j < 5; $j++) {
-                if (!$this->sameSuit($cards[$i], $cards[$j])) return false;
-            }
-        }
-        return true;
+        if ($this->countSuits(($cards)) == 1) return true;
     }
 
     private function hasFullHouse($cards)
     {
 
-        if ($this->countDifferentRanks($cards) == 2 && $this->hasAPair($cards)) {
+        if ($this->countRanks($cards) == 2 && $this->hasAPair($cards))
             return true ;
-        }
 
         return false;
     }
 
     public function hasPoker($cards)
     {
-        if ($this->hasOnlyTwoRanks($cards)) {
+        if ($this->countRanks($cards) == 2) {
             return true;
         }
     }
@@ -125,19 +111,19 @@ class PokerHands
         return 1;
     }
 
+    private function getCardRank($card)
+    {
+        foreach ($this->card_ranks as $key => $value) {
+            if (preg_match("/$key/", $card) == true)
+                return $value;
+        }
+    }
+
     private function getCardSuit($card)
     {
         return (substr($card, 1, 1));
     }
 
-    private function convertCardsToRanks($cards)
-    {
-        $result = array();
-        foreach ($cards as $card) {
-            $result[] = $this->getCardRank($card);
-        }
-        return $result;
-    }
 
     private function sameSuit($card1, $card2)
     {
@@ -149,15 +135,29 @@ class PokerHands
         return $this->getCardRank($card1) == $this->getCardRank($card2);
     }
 
-    private function hasOnlyTwoRanks($cards)
+    private function getRanks($cards)
     {
-        return count(array_unique($cards)) == 2;
+        $result = array();
+        foreach ($cards as $card) {
+            $result[] = $this->getCardRank($card);
+        }
+        return $result;
     }
 
-    private function countDifferentRanks($cards)
+    private function countRanks($cards)
     {
-        $ranked_cards = $this->convertCardsToRanks($cards);
+        $ranked_cards = $this->getRanks($cards);
         return count(array_unique($ranked_cards));
+    }
+
+    private function countSuits($cards)
+    {
+        $result = array();
+        foreach ($cards as $card) {
+            $result[] = $this->getCardSuit($card);
+        }
+
+        if (count(array_unique($result)) == 1) return true;
     }
 
     private function countPairs($cards)
