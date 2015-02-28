@@ -58,6 +58,20 @@ class PokerHandsSpec extends ObjectBehavior
         $this->compareHands($this->hand1, $this->hand2)->shouldReturn($this->hand1);
     }
 
+    function it_compares_two_hands_for_straight_starting_in_ace_win()
+    {
+        $this->hand1 = array("2h", "3d", "6d", "5c", "6d");
+        $this->hand2 = array("Ac", "2h", "3s", "4c", "5h");
+        $this->compareHands($this->hand1, $this->hand2)->shouldReturn($this->hand2);
+    }
+
+    function it_compares_two_hands_for_straight_endinf_in_ace_win()
+    {
+        $this->hand1 = array("2h", "3d", "6d", "5c", "6d");
+        $this->hand2 = array("Tc", "Jh", "Qs", "Kc", "Ah");
+        $this->compareHands($this->hand1, $this->hand2)->shouldReturn($this->hand2);
+    }
+
     function it_compares_two_hands_for_flush_win()
     {
         $this->hand1 = array("2h", "3d", "4d", "5c", "6d");
@@ -79,9 +93,30 @@ class PokerHandsSpec extends ObjectBehavior
         $this->compareHands($this->hand1, $this->hand2)->shouldReturn($this->hand2);
     }
 
-    function it_compares_two_pairs_and_wins_the_highest_one() {
-
+    function it_compares_two_pairs(){
+        $this->hand1 = array("2h", "3d", "As", "Kc", "Kd");
+        $this->hand2 = array("Qc", "Qh", "Ac", "Kc", "3c");
+        $this->compareHands($this->hand1, $this->hand2)->shouldReturn($this->hand1);
     }
+
+    // function it_compares_two_pairs_and_wins_the_highest_one() {
+    //     $this->hand1 = array("3h", "3d", "5s", "5c", "Ad");
+    //     $this->hand2 = array("4s", "4c", "Kc", "Kh", "3c");
+    //     $this->compareHands($this->hand1, $this->hand2)->shouldReturn($this->hand2);
+    // }
+
+    // function it_tests()
+    // {
+    //     $this->hand1 = array("4s", "4c", "Kc", "Kh", "3c");
+    //     $this->getOrderedArrayOfRanks($this->hand1)->shouldReturn($this->hand1);
+    // }
+
+    // function it_compares_two_equal_pairs_and_wins_the_highest_card() {
+    //     $this->hand1 = array("4h", "4d", "Ks", "Kc", "Ad");
+    //     $this->hand2 = array("4s", "4c", "Kc", "Kh", "3c");
+    //     $this->compareHands($this->hand1, $this->hand2)->shouldReturn($this->hand1);
+    // }
+
     // function it_compares_two_equal_pairs_and_wins_the_highest_card()
     // function it_compares_two_double_pairs_and_wins_the_highest_one()
     // function it_compares_two_equal_double_pairs_and_wins_the_highest_card()
