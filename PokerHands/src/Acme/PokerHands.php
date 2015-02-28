@@ -11,9 +11,10 @@ class PokerHands
     const FLUSH = 6;
     const FULL = 7;
     const POKER = 8;
+    const STRAIGHT_FLUSH = 9;
 
-    public $hand1 = array();
-    public $hand2 = array();
+    public $hand_1 = array();
+    public $hand_2 = array();
     private $card_ranks = array(
         "A" => 14,
         "K" => 13,
@@ -30,25 +31,39 @@ class PokerHands
         "2" => 2,
         );
 
-    public function compareHands($hand1, $hand2)
+    public function compareHands($hand_1, $hand_2)
     {
 
-        if ($this->getHandType($hand1) == $this->getHandType($hand2)) {
+        // if tie (ordered_rank1 == ordered_rank2) // maybe array_intersect
+        if ($this->isATie($hand_1, $hand_2)) return "Tie";
 
-            if ($this->getHandType($hand1) == self::PAIR) {
-                return $this->comparePairs($hand1, $hand2);
+        if ($this->sameRank($hand_1, $hand_2)) {
+
+            if ($this->hasDoublePairs($hand_1)) {
+                return $this->compareDoublePairs($hand_1, $hand_2);
             }
 
-            return ($this->getHighestCardRankInAHand($hand1)
-                > $this->getHighestCardRankInAHand($hand2) ? $hand1 : $hand2);
+            if ($this->hasAPair($hand_1)
+                || $this->hasTrips($hand_1)
+                || $this->hasFullHouse($hand_1)
+                || $this->hasPoker($hand_1)) {
+                return $this->comparePairTripsFullPoker($hand_1, $hand_2);
+            }
+
+            if ($this->hasStraight($hand_1)) {
+                return $this->compareStraights($hand_1, $hand_2);
+            }
+
+            return ($this->getHighestCardRankInAHand($hand_1)
+                > $this->getHighestCardRankInAHand($hand_2) ? $hand_1 : $hand_2);
         }
 
-        if ($this->getHandType($hand1) > $this->getHandType($hand2)) {
-            return $hand1;
+        if ($this->getHandRank($hand_1) > $this->getHandRank($hand_2)) {
+            return $hand_1;
         }
 
-        if ($this->getHandType($hand1) < $this->getHandType($hand2)) {
-            return $hand2;
+        if ($this->getHandRank($hand_1) < $this->getHandRank($hand_2)) {
+            return $hand_2;
         }
     }
 
@@ -82,9 +97,14 @@ class PokerHands
                     return false;
                 }
             }
-            return true;
+        } else {
+            for ($i=0; $i < 4 ; $i++) {
+                if ($cards[$i+1] - $cards[$i] != 1)  {
+                    return false;
+                }
+            }
         }
-        if ($cards[4] - $cards[0] == 4) return true;
+        return true;
 
     }
 
@@ -103,11 +123,18 @@ class PokerHands
         return $this->getGroupedHandRanks($cards) == array(4,1);
     }
 
-
-
-
-    private function getHandType($hand)
+    private function hasStraightFlush($cards)
     {
+        return $this->hasStraight($cards) && $this->hasFlush($cards);
+    }
+
+
+
+
+    public function getHandRank($hand)
+    {
+
+        if ($this->hasStraightFlush($hand)) return self::STRAIGHT_FLUSH;
         if ($this->hasPoker($hand)) return self::POKER;
         if ($this->hasFullHouse($hand)) return self::FULL;
         if ($this->hasFlush($hand)) return self::FLUSH;
@@ -165,24 +192,68 @@ class PokerHands
         return array_keys($ordered_array);
     }
 
-    private function comparePairs($hand1, $hand2)
+    private function comparePairTripsFullPoker($hand_1, $hand_2)
     {
-        $ranks1 = $this->getOrderedHandRanks($hand1);
-        $rank1 = $ranks1[0];
+        $ranks_1 = $this->getOrderedHandRanks($hand_1);
+        $ranks_2 = $this->getOrderedHandRanks($hand_2);
 
-        $ranks2 = $this->getOrderedHandRanks($hand2);
-        $rank2 = $ranks2[0];
+        $top_rank_hand_1 = $ranks_1[0];
+        $top_rank_hand_2 = $ranks_2[0];
 
-
-        if ($rank1 == $rank2) {
-            array_shift($ranks1);
-            array_shift($ranks2);
-            return (max($ranks1) > max($ranks2) ? $hand1 : $hand2);
+        if ($top_rank_hand_1 == $top_rank_hand_2) { // only runs in pairs
+            array_shift($ranks_1);
+            array_shift($ranks_2);
+            return (max($ranks_1) > max($ranks_2) ? $hand_1 : $hand_2);
         }
 
-        return ($rank1 > $rank2 ? $hand1 : $hand2);
-
-
+        return ($top_rank_hand_1 > $top_rank_hand_2 ? $hand_1 : $hand_2);
     }
 
+    private function compareDoublePairs($hand_1, $hand_2)
+    {
+
+        $ranks_1 = $this->getOrderedHandRanks($hand_1);
+        $ranks_2 = $this->getOrderedHandRanks($hand_2);
+
+        $top_pair_rank_1 = $ranks_1[0];
+        $top_pair_rank_2 = $ranks_2[0];
+
+        if ($top_pair_rank_1 == $top_pair_rank_2) {
+
+            $second_pair_rank_1 = $ranks_1[1];
+            $second_pair_rank_2 = $ranks_2[1];
+
+            if ($second_pair_rank_1 == $second_pair_rank_2) {
+
+                return ($ranks_1[2] > $ranks_2[2] ? $hand_1 : $hand_2);
+
+            }
+
+            return ($second_pair_rank_1 > $second_pair_rank_2 ? $hand_1 : $hand_2);
+
+        }
+
+        return ($top_pair_rank_1 > $top_pair_rank_2 ? $hand_1 : $hand_2);
+    }
+
+    private function compareStraights($hand_1, $hand_2)
+    {
+        $ranks_1 = $this->getOrderedRanks($hand_1);
+        $ranks_2 = $this->getOrderedRanks($hand_2);
+
+        $second_rank_from_the_top_1 = $ranks_1[3];
+        $second_rank_from_the_top_2 = $ranks_2[3];
+
+        return ($second_rank_from_the_top_1 > $second_rank_from_the_top_2 ? $hand_1 : $hand_2);
+    }
+
+    private function sameRank($hand_1, $hand_2)
+    {
+        return $this->getHandRank($hand_1) == $this->getHandRank($hand_2);
+    }
+
+    private function isATie($hand_1, $hand_2)
+    {
+        return $this->getOrderedRanks($hand_1) == $this->getOrderedRanks($hand_2);
+    }
 }
