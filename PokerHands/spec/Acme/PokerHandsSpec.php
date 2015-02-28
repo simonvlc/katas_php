@@ -162,12 +162,6 @@ class PokerHandsSpec extends ObjectBehavior
         $this->compareHands($this->hand_1, $this->hand_2)->shouldReturn($this->hand_2);
     }
 
-    function it_should_return_double_pair_rank_with_a_hand_that_returned_straiht_too()
-    {
-        $this->hand_1 = array("2c", "2h", "4c", "4h", "6c");
-        $this->getHandRank($this->hand_1)->shouldReturn(3);
-    }
-
     function it_compares_two_equal_double_pair_hands_winning_high_card()
     {
         $this->hand_1 = array("2s", "2d", "4s", "4d", "Kh");
