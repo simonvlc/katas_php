@@ -35,21 +35,8 @@ class PokerHands
 
         if ($this->getHandType($hand1) == $this->getHandType($hand2)) {
 
-            // if ($this->getHandType($hand1) == self::DOUBLE_PAIRS) {
-            //     return (max($this->getPairs($hand1))
-            //         > max($this->getPairs($hand2)) ? $hand1 : $hand2);
-            //     // else return highcard of the non paired card
-            // }
-
             if ($this->getHandType($hand1) == self::PAIR) {
-                $aux = $this->getOrderedHandRanks($hand1);
-                $rank1 = $aux[0];
-
-                $aux = $this->getOrderedHandRanks($hand2);
-                $rank2 = $aux[0];
-
-                // var_dump($rank1);
-                // var_dump($rank2);
+                return $this->comparePairs($hand1, $hand2);
             }
 
             return ($this->getHighestCardRankInAHand($hand1)
@@ -175,10 +162,27 @@ class PokerHands
     {
         $ordered_array = array_count_values($this->getOrderedRanks($cards));
         arsort($ordered_array);
-        var_dump(array_keys($ordered_array));
         return array_keys($ordered_array);
     }
 
+    private function comparePairs($hand1, $hand2)
+    {
+        $ranks1 = $this->getOrderedHandRanks($hand1);
+        $rank1 = $ranks1[0];
 
+        $ranks2 = $this->getOrderedHandRanks($hand2);
+        $rank2 = $ranks2[0];
+
+
+        if ($rank1 == $rank2) {
+            array_shift($ranks1);
+            array_shift($ranks2);
+            return (max($ranks1) > max($ranks2) ? $hand1 : $hand2);
+        }
+
+        return ($rank1 > $rank2 ? $hand1 : $hand2);
+
+
+    }
 
 }

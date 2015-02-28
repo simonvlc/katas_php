@@ -93,10 +93,24 @@ class PokerHandsSpec extends ObjectBehavior
         $this->compareHands($this->hand1, $this->hand2)->shouldReturn($this->hand2);
     }
 
-    function it_compares_two_pairs(){
+    function it_compares_two_hands_with_a_pair_each(){
         $this->hand1 = array("2h", "3d", "As", "Kc", "Kd");
         $this->hand2 = array("Qc", "Qh", "Ac", "Kc", "3c");
         $this->compareHands($this->hand1, $this->hand2)->shouldReturn($this->hand1);
+    }
+
+    function it_compares_two_hands_with_an_equal_pair_each()
+    {
+        $this->hand1 = array("2h", "3d", "Ks", "Qs", "Qd");
+        $this->hand2 = array("Qc", "Qh", "7c", "2c", "3c");
+        $this->compareHands($this->hand1, $this->hand2)->shouldReturn($this->hand1);
+    }
+
+    function it_compares_two_hands_with_an_equal_pair_as_a_tie()
+    {
+        $this->hand1 = array("2h", "3d", "Ks", "Qs", "Qd");
+        $this->hand2 = array("2d", "3h", "Kc", "Qh", "Qc");
+        $this->compareHands($this->hand1, $this->hand2)->shouldReturn("Tie");
     }
 
     // function it_compares_two_pairs_and_wins_the_highest_one() {
