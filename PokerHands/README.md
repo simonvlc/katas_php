@@ -60,5 +60,5 @@ highest card in the hand.
 ## Clues
 * http://nsayer.blogspot.com.es/2007/07/algorithm-for-evaluating-poker-hands.html
 
-## Advanced stuff
+## Advanced Stuff
 * http://codingthewheel.com/archives/poker-hand-evaluator-roundup
