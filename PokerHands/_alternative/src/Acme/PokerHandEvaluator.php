@@ -15,7 +15,19 @@ class PokerHandEvaluator
 
     public function compareHands()
     {
-        return $this->h1->getHighestRankInHand()
-            > $this->h2->getHighestRankInHand() ? $this->h1 : $this->h2;
+
+        if ($this->equalHandRank()) {
+            return $this->h1->getHighestRankInHand()
+                > $this->h2->getHighestRankInHand() ? $this->h1 : $this->h2;
+        }
+
+        return $this->h1->getHandRank() > $this->h2->getHandRank()
+            ? $this->h1 : $this->h2;
     }
+
+    private function equalHandRank()
+    {
+        return $this->h1->getHandRank() == $this->h2->getHandRank();
+    }
+
 }

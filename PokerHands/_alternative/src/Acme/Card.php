@@ -33,6 +33,11 @@ class Card
         return $this->ranks_lookup[$this->card_number];
     }
 
+    public function getSuit()
+    {
+        return $this->card_suit;
+    }
+
     public static function createFromString($string)
     {
         return new Card(substr($string, 0,1), substr($string, 1,1));
