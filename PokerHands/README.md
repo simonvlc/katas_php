@@ -52,13 +52,13 @@ Ranked by the value of the 3 cards.
 highest card in the hand.
 
 ## Suggested Test Cases
-hand_1: 2h 3d 5s 9c Kd  hand_2: 2c 3h 4s 8c Ah  =>  hand_2 wins with high card A
-hand_1: 2h 4s 4c 2d 4h  hand_2: 2s 8s As Qs 3s  =>  hand_2 wins with fush
-hand_1: 2h 3d 5s 9c Kd  hand_2: 2c 3h 4s 8c Kh  =>  hand_1 wins with high card 9
-hand_1: 2h 3d 5s 9c Kd  hand_2: 2d 3h 5c 9s Kh  =>  Tie
+* hand_1: 2h 3d 5s 9c Kd  hand_2: 2c 3h 4s 8c Ah  =>  hand_2 wins with high card A
+* hand_1: 2h 4s 4c 2d 4h  hand_2: 2s 8s As Qs 3s  =>  hand_2 wins with fush
+* hand_1: 2h 3d 5s 9c Kd  hand_2: 2c 3h 4s 8c Kh  =>  hand_1 wins with high card 9
+* hand_1: 2h 3d 5s 9c Kd  hand_2: 2d 3h 5c 9s Kh  =>  Tie
 
 ## Clues
 * http://nsayer.blogspot.com.es/2007/07/algorithm-for-evaluating-poker-hands.html
 
-## Advanced stuff
+## Advanced Stuff
 * http://codingthewheel.com/archives/poker-hand-evaluator-roundup
