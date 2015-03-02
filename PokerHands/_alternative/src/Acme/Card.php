@@ -4,8 +4,8 @@ namespace Acme;
 
 class Card
 {
-    public $card_number;
-    public $suit;
+    private $card_number;
+    private $card_suit;
     private $ranks_lookup = array(
         "A" => 14,
         "K" => 13,
@@ -22,14 +22,19 @@ class Card
         "2" => 2,
         );
 
-    public function __construct($card_number, $suit)
+    public function __construct($card_number, $card_suit)
     {
         $this->card_number = $card_number;
-        $this->suit = $suit;
+        $this->card_suit = $card_suit;
     }
 
     public function getCardRank()
     {
         return $this->ranks_lookup[$this->card_number];
+    }
+
+    public static function createFromString($string)
+    {
+        return new Card(substr($string, 0,1), substr($string, 1,1));
     }
 }

@@ -9,7 +9,7 @@ class Hand
     public function __construct(array $cards)
     {
         foreach ($cards as $card) {
-            array_push($this->cards, new Card(substr($card, 0,1), substr($card, 1,1)));
+            $this->cards[] = Card::createFromString($card);
         }
     }
 

@@ -4,8 +4,8 @@ namespace Acme;
 
 class PokerHandEvaluator
 {
-    public $h1;
-    public $h2;
+    private $h1;
+    private $h2;
 
     public function __construct(Hand $h1, Hand $h2)
     {
