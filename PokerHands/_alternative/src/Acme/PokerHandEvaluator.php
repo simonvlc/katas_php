@@ -16,7 +16,22 @@ class PokerHandEvaluator
     public function compareHands()
     {
 
+        if ($this->isATie()) return "Tie.";
+
         if ($this->equalHandRank()) {
+
+            if ($this->h1->isAGroupedHand()) {
+                return $this->compareGroupedHands();
+            }
+
+            if ($this->h1->isDoublePairs()) {
+                return $this->compareDoublePairs();
+            }
+
+            if ($this->h1->isStraight()) {
+                return $this->compareStraights();
+            }
+
             return $this->h1->getHighestRankInHand()
                 > $this->h2->getHighestRankInHand() ? $this->h1 : $this->h2;
         }
@@ -28,6 +43,41 @@ class PokerHandEvaluator
     private function equalHandRank()
     {
         return $this->h1->getHandRank() == $this->h2->getHandRank();
+    }
+
+    private function compareGroupedHands()
+    {
+        if ($this->h1->getTopRank() == $this->h2->getTopRank()) {
+            return ($this->h1->getSecondRank() > $this->h2->getSecondRank()
+                ? $this->h1 : $this->h2);
+        }
+        return ($this->h1->getTopRank()
+            > $this->h2->getTopRank() ? $this->h1 : $this->h2);
+    }
+
+    private function compareDoublePairs()
+    {
+        if ($this->h1->getTopRank() == $this->h2->getTopRank()) {
+            if ($this->h1->getSecondRank() == $this->h2->getSecondRank()) {
+                return ($this->h1->getThirdRank()
+                    > $this->h2->getThirdRank() ? $this->h1 : $this->h2);
+            }
+            return ($this->h1->getSecondRank()
+                > $this->h2->getSecondRank() ? $this->h1 : $this->h2);
+        }
+        return ($this->h1->getSecondRank()
+            > $this->h2->getSecondRank() ? $this->h1 : $this->h2);
+    }
+
+    private function compareStraights()
+    {
+        return ($this->h1->getSecondRank()
+            > $this->h2->getSecondRank() ? $this->h1 : $this->h2);
+    }
+
+    private function isATie()
+    {
+        return $this->h1->getOrderedRanks() == $this->h2->getOrderedRanks();
     }
 
 }

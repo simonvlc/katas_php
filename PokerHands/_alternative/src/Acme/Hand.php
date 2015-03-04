@@ -26,6 +26,7 @@ class Hand
 
     public function getHandRank()
     {
+        if ($this->isStraightFlush()) return self::STRAIGHT_FLUSH;
         if ($this->isPoker()) return self::POKER;
         if ($this->isFullHouse()) return self::FULL;
         if ($this->isFlush()) return self::FLUSH;
@@ -42,7 +43,7 @@ class Hand
         return max($aux);
     }
 
-    private function getOrderedRanks()
+    public function getOrderedRanks()
     {
         $result = array();
         foreach ($this->cards as $card) {
@@ -67,7 +68,7 @@ class Hand
         return $this->getOrderedHandRanksDistribution() == array(3,1,1);
     }
 
-    private function isStraight()
+    public function isStraight()
     {
         $cards = $this->getOrderedRanks();
         if ($cards[4] == self::ACE) {
@@ -100,6 +101,18 @@ class Hand
         return $this->getOrderedHandRanksDistribution() == array(4,1);
     }
 
+    private function isStraightFlush()
+    {
+        return $this->isStraight() && $this->isFlush();
+    }
+
+
+    public function isAGroupedHand()
+    {
+        return ($this->isAPair() || $this->isTrips()
+            || $this->isFullHouse() || $this->isPoker());
+    }
+
     // refactor this into isFlush
     private function countSuits()
     {
@@ -124,16 +137,21 @@ class Hand
         return array_keys($ranks);
     }
 
-    private function getTopRank()
+    public function getTopRank()
     {
         $ranks = $this->getOrderedHandRanks();
         return $ranks[0];
     }
 
-    private function getSecondRank()
+    public function getSecondRank()
     {
         $ranks = $this->getOrderedHandRanks();
         return $ranks[1];
     }
 
+    public function getThirdRank()
+    {
+        $ranks = $this->getOrderedHandRanks();
+        return $ranks[2];
+    }
 }
