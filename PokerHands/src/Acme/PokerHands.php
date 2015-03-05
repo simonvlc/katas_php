@@ -36,18 +36,24 @@ class PokerHands
     public function compareHands($hand_1, $hand_2)
     {
         if ($this->isATie($hand_1, $hand_2)) return "Tie";
+
         if ($this->equalHandRank($hand_1, $hand_2)) {
+
             if ($this->isAGroupedHand($hand_1)) {
                 return $this->compareGroupedHands($hand_1, $hand_2);
             }
+
             if ($this->hasDoublePairs($hand_1)) {
                 return $this->compareDoublePairs($hand_1, $hand_2);
             }
+
             if ($this->hasStraight($hand_1)) {
                 return $this->compareStraights($hand_1, $hand_2);
             }
+
             return ($this->getHighRank($hand_1)
                 > $this->getHighRank($hand_2) ? $hand_1 : $hand_2);
+
         }
         return $this->getHandRank($hand_1) > $this->getHandRank($hand_2)
             ? $hand_1 : $hand_2;
