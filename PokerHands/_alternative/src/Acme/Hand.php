@@ -37,15 +37,8 @@ class Hand
         return self::HIGH_CARD;
     }
 
-    public function getHighestRankInHand()
-    {
-        $aux = $this->getOrderedRanks();
-        return max($aux);
-    }
-
     public function getOrderedRanks()
     {
-        $result = array();
         foreach ($this->cards as $card) {
             $result[] = $card->getCardRank();
         }
@@ -89,7 +82,10 @@ class Hand
 
     private function isFlush()
     {
-        return $this->countSuits() == 1;
+        foreach ($this->cards as $card) {
+            $result[] = $card->getSuit();
+        }
+        return (count(array_unique($result))) == 1;
     }
 
     private function isFullHouse()
@@ -111,16 +107,6 @@ class Hand
     {
         return ($this->isAPair() || $this->isTrips()
             || $this->isFullHouse() || $this->isPoker());
-    }
-
-    // refactor this into isFlush
-    private function countSuits()
-    {
-        $result = array();
-        foreach ($this->cards as $card) {
-            $result[] = $card->getSuit();
-        }
-        return (count(array_unique($result)));
     }
 
     private function getOrderedHandRanksDistribution()

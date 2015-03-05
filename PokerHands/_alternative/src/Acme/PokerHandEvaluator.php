@@ -4,13 +4,13 @@ namespace Acme;
 
 class PokerHandEvaluator
 {
-    private $h1;
-    private $h2;
+    private $hand1;
+    private $hand2;
 
-    public function __construct(Hand $h1, Hand $h2)
+    public function __construct(Hand $hand1, Hand $hand2)
     {
-        $this->h1 = $h1;
-        $this->h2 = $h2;
+        $this->hand1 = $hand1;
+        $this->hand2 = $hand2;
     }
 
     public function compareHands()
@@ -18,66 +18,66 @@ class PokerHandEvaluator
 
         if ($this->isATie()) return "Tie.";
 
-        if ($this->equalHandRank()) {
+        if ($this->handsHaveSameRank()) {
 
-            if ($this->h1->isAGroupedHand()) {
+            if ($this->hand1->isAGroupedHand()) {
                 return $this->compareGroupedHands();
             }
 
-            if ($this->h1->isDoublePairs()) {
+            if ($this->hand1->isDoublePairs()) {
                 return $this->compareDoublePairs();
             }
 
-            if ($this->h1->isStraight()) {
+            if ($this->hand1->isStraight()) {
                 return $this->compareStraights();
             }
 
-            return $this->h1->getHighestRankInHand()
-                > $this->h2->getHighestRankInHand() ? $this->h1 : $this->h2;
+            return $this->hand1->getTopRank()
+                > $this->hand2->getTopRank() ? $this->hand1 : $this->hand2;
         }
 
-        return $this->h1->getHandRank() > $this->h2->getHandRank()
-            ? $this->h1 : $this->h2;
+        return $this->hand1->getHandRank() > $this->hand2->getHandRank()
+            ? $this->hand1 : $this->hand2;
     }
 
-    private function equalHandRank()
+    private function handsHaveSameRank()
     {
-        return $this->h1->getHandRank() == $this->h2->getHandRank();
+        return $this->hand1->getHandRank() == $this->hand2->getHandRank();
     }
 
     private function compareGroupedHands()
     {
-        if ($this->h1->getTopRank() == $this->h2->getTopRank()) {
-            return ($this->h1->getSecondRank() > $this->h2->getSecondRank()
-                ? $this->h1 : $this->h2);
+        if ($this->hand1->getTopRank() == $this->hand2->getTopRank()) {
+            return ($this->hand1->getSecondRank() > $this->hand2->getSecondRank()
+                ? $this->hand1 : $this->hand2);
         }
-        return ($this->h1->getTopRank()
-            > $this->h2->getTopRank() ? $this->h1 : $this->h2);
+        return ($this->hand1->getTopRank()
+            > $this->hand2->getTopRank() ? $this->hand1 : $this->hand2);
     }
 
     private function compareDoublePairs()
     {
-        if ($this->h1->getTopRank() == $this->h2->getTopRank()) {
-            if ($this->h1->getSecondRank() == $this->h2->getSecondRank()) {
-                return ($this->h1->getThirdRank()
-                    > $this->h2->getThirdRank() ? $this->h1 : $this->h2);
+        if ($this->hand1->getTopRank() == $this->hand2->getTopRank()) {
+            if ($this->hand1->getSecondRank() == $this->hand2->getSecondRank()) {
+                return ($this->hand1->getThirdRank()
+                    > $this->hand2->getThirdRank() ? $this->hand1 : $this->hand2);
             }
-            return ($this->h1->getSecondRank()
-                > $this->h2->getSecondRank() ? $this->h1 : $this->h2);
+            return ($this->hand1->getSecondRank()
+                > $this->hand2->getSecondRank() ? $this->hand1 : $this->hand2);
         }
-        return ($this->h1->getSecondRank()
-            > $this->h2->getSecondRank() ? $this->h1 : $this->h2);
+        return ($this->hand1->getSecondRank()
+            > $this->hand2->getSecondRank() ? $this->hand1 : $this->hand2);
     }
 
     private function compareStraights()
     {
-        return ($this->h1->getSecondRank()
-            > $this->h2->getSecondRank() ? $this->h1 : $this->h2);
+        return ($this->hand1->getSecondRank()
+            > $this->hand2->getSecondRank() ? $this->hand1 : $this->hand2);
     }
 
     private function isATie()
     {
-        return $this->h1->getOrderedRanks() == $this->h2->getOrderedRanks();
+        return $this->hand1->getOrderedRanks() == $this->hand2->getOrderedRanks();
     }
 
 }
