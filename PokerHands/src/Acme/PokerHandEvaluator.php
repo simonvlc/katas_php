@@ -28,7 +28,7 @@ class PokerHandEvaluator
 
     private function handsHaveSameRank()
     {
-        return $this->hand1->getHandRank() == $this->hand2->getHandRank();
+        return $this->hand1->getHandRanking() == $this->hand2->getHandRanking();
     }
 
     private function compareHandsWithTheSameRank()
@@ -77,7 +77,7 @@ class PokerHandEvaluator
 
     private function isATie()
     {
-        return $this->hand1->getOrderedRanks() == $this->hand2->getOrderedRanks();
+        return $this->hand1->getOrderedCardRanks() == $this->hand2->getOrderedCardRanks();
     }
 
     private function isPairedForTopRank()
@@ -110,7 +110,7 @@ class PokerHandEvaluator
 
     private function getBestHand()
     {
-        return ($this->hand1->getHandRank() > $this->hand2->getHandRank()
+        return ($this->hand1->getHandRanking() > $this->hand2->getHandRanking()
             ? $this->hand1 : $this->hand2);
     }
 }

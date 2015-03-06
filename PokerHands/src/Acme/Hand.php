@@ -24,7 +24,7 @@ class Hand
         }
     }
 
-    public function getHandRank()
+    public function getHandRanking()
     {
         if ($this->isStraightFlush()) return self::STRAIGHT_FLUSH;
         if ($this->isPoker()) return self::POKER;
@@ -37,7 +37,7 @@ class Hand
         return self::HIGH_CARD;
     }
 
-    public function getOrderedRanks()
+    public function getOrderedCardRanks()
     {
         foreach ($this->cards as $card) {
             $result[] = $card->getCardRank();
@@ -48,22 +48,22 @@ class Hand
 
     private function isAPair()
     {
-        return $this->getOrderedHandRanksDistribution() == array(2,1,1,1);
+        return $this->getHandDistribution() == array(2,1,1,1);
     }
 
     public function isDoublePairs()
     {
-        return $this->getOrderedHandRanksDistribution() == array(2,2,1);
+        return $this->getHandDistribution() == array(2,2,1);
     }
 
     private function isTrips()
     {
-        return $this->getOrderedHandRanksDistribution() == array(3,1,1);
+        return $this->getHandDistribution() == array(3,1,1);
     }
 
     public function isStraight()
     {
-        $cards = $this->getOrderedRanks();
+        $cards = $this->getOrderedCardRanks();
         if ($cards[4] == self::ACE) {
             for ($i=0; $i < 3 ; $i++) {
                 if ($cards[$i+1] - $cards[$i] != 1)  {
@@ -90,11 +90,11 @@ class Hand
 
     private function isFullHouse()
     {
-        return $this->getOrderedHandRanksDistribution() == array(3,2);
+        return $this->getHandDistribution() == array(3,2);
     }
     private function isPoker()
     {
-        return $this->getOrderedHandRanksDistribution() == array(4,1);
+        return $this->getHandDistribution() == array(4,1);
     }
 
     private function isStraightFlush()
@@ -109,35 +109,35 @@ class Hand
             || $this->isFullHouse() || $this->isPoker());
     }
 
-    private function getOrderedHandRanksDistribution()
+    private function getHandDistribution()
     {
-        $ranks = array_count_values($this->getOrderedRanks());
+        $ranks = array_count_values($this->getOrderedCardRanks());
         arsort($ranks);
         return array_values($ranks);
     }
 
-    private function getOrderedHandRanks()
+    private function getDistributedRanksInHand()
     {
-        $ranks = array_count_values($this->getOrderedRanks());
+        $ranks = array_count_values($this->getOrderedCardRanks());
         arsort($ranks);
         return array_keys($ranks);
     }
 
     public function getTopRank()
     {
-        $ranks = $this->getOrderedHandRanks();
+        $ranks = $this->getDistributedRanksInHand();
         return $ranks[0];
     }
 
     public function getSecondRank()
     {
-        $ranks = $this->getOrderedHandRanks();
+        $ranks = $this->getDistributedRanksInHand();
         return $ranks[1];
     }
 
     public function getThirdRank()
     {
-        $ranks = $this->getOrderedHandRanks();
+        $ranks = $this->getDistributedRanksInHand();
         return $ranks[2];
     }
 }
