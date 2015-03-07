@@ -18,7 +18,7 @@ class Hand
         }
     }
 
-    public function getHandRanking()
+    public function handRanking()
     {
         if ($this->isStraightFlush()) return "straight_flush";
         elseif ($this->isPoker()) return "poker";
@@ -34,6 +34,21 @@ class Hand
     public function isTheSameHand(Hand $other_hand)
     {
         return $this->getOrderedCardRanks() == $other_hand->getOrderedCardRanks();
+    }
+
+    public function hasTheSameRanking(Hand $other_hand)
+    {
+        return $this->handRanking() == $other_hand->handRanking();
+    }
+
+    public function isPairedForTopRank(Hand $other_hand)
+    {
+        return $this->getTopRank() == $other_hand->getTopRank();
+    }
+
+    public function isPairedForSecondRank(Hand $other_hand)
+    {
+        return $this->getSecondRank() == $other_hand->getSecondRank();
     }
 
     private function getOrderedCardRanks()
