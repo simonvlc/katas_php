@@ -6,6 +6,17 @@ class PokerHandEvaluator
 {
     private $hand1;
     private $hand2;
+    private $hand_rankings_value = array(
+        "high_card" => 1,
+        "pair" => 2,
+        "double_pairs" => 3,
+        "trips" => 4,
+        "straight" => 5,
+        "flush" => 6,
+        "full_house" => 7,
+        "poker" => 8,
+        "straight_flush" => 9
+    );
 
     public function __construct(Hand $hand1, Hand $hand2)
     {
@@ -18,12 +29,15 @@ class PokerHandEvaluator
         if ($this->isATie()) {
             return "Tie.";
         }
-
         if ($this->handsHaveSameRank()) {
             return $this->compareHandsWithTheSameRank();
         }
-
         return $this->getBestHand();
+    }
+
+    private function isATie()
+    {
+        return $this->hand1->isTheSameHand($this->hand2);
     }
 
     private function handsHaveSameRank()
@@ -33,19 +47,23 @@ class PokerHandEvaluator
 
     private function compareHandsWithTheSameRank()
     {
-        if ($this->hand1->isAGroupedHand()) {
-            return $this->compareGroupedHands();
+        switch ($this->hand1->getHandRanking()) {
+            case 'pair':
+            case 'trips':
+            case 'full_house':
+            case 'poker':
+                return $this->compareGroupedHands();
+                break;
+            case 'double_pairs':
+                return $this->compareDoublePairs();
+                break;
+            case 'straight':
+                return $this->compareStraights();
+                break;
+            default:
+                return $this->getHandWithTheHighestRank();
+                break;
         }
-
-        if ($this->hand1->isDoublePairs()) {
-            return $this->compareDoublePairs();
-        }
-
-        if ($this->hand1->isStraight()) {
-            return $this->compareStraights();
-        }
-
-        return $this->getHandWithTheHighestRank();
     }
 
     private function compareGroupedHands()
@@ -54,6 +72,12 @@ class PokerHandEvaluator
             return $this->getHandWithTheHighestSecondRank();
         }
         return $this->getHandWithTheHighestRank();
+    }
+
+    private function getHandWithTheHighestSecondRank()
+    {
+        return ($this->hand1->getSecondRank()
+                > $this->hand2->getSecondRank() ? $this->hand1 : $this->hand2);
     }
 
     private function compareDoublePairs()
@@ -67,17 +91,6 @@ class PokerHandEvaluator
         } else {
             return $this->getHandWithTheHighestRank();
         }
-    }
-
-    private function compareStraights()
-    {
-        return ($this->hand1->getSecondRank()
-            > $this->hand2->getSecondRank() ? $this->hand1 : $this->hand2);
-    }
-
-    private function isATie()
-    {
-        return $this->hand1->getOrderedCardRanks() == $this->hand2->getOrderedCardRanks();
     }
 
     private function isPairedForTopRank()
@@ -96,10 +109,10 @@ class PokerHandEvaluator
             ? $this->hand1 : $this->hand2);
     }
 
-    private function getHandWithTheHighestSecondRank()
+    private function compareStraights()
     {
         return ($this->hand1->getSecondRank()
-                > $this->hand2->getSecondRank() ? $this->hand1 : $this->hand2);
+            > $this->hand2->getSecondRank() ? $this->hand1 : $this->hand2);
     }
 
     private function getHandWithTheHighestRank()
@@ -110,7 +123,8 @@ class PokerHandEvaluator
 
     private function getBestHand()
     {
-        return ($this->hand1->getHandRanking() > $this->hand2->getHandRanking()
+        return ($this->hand_rankings_value[$this->hand1->getHandRanking()]
+            > $this->hand_rankings_value[$this->hand2->getHandRanking()]
             ? $this->hand1 : $this->hand2);
     }
 }

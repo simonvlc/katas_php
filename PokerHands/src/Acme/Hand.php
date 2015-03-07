@@ -4,16 +4,10 @@ namespace Acme;
 
 class Hand
 {
-    const HIGH_CARD = 1;
-    const PAIR = 2;
-    const DOUBLE_PAIRS = 3;
-    const TRIPS = 4;
-    const STRAIGHT = 5;
-    const FLUSH = 6;
-    const FULL = 7;
-    const POKER = 8;
-    const STRAIGHT_FLUSH = 9;
+
     const ACE = 14;
+    const LAST_RANK_POSITION = 4;
+    const NEXT_TO_LAST_RANK_POSITION = 3;
 
     private $cards = array();
 
@@ -26,18 +20,23 @@ class Hand
 
     public function getHandRanking()
     {
-        if ($this->isStraightFlush()) return self::STRAIGHT_FLUSH;
-        if ($this->isPoker()) return self::POKER;
-        if ($this->isFullHouse()) return self::FULL;
-        if ($this->isFlush()) return self::FLUSH;
-        if ($this->isStraight()) return self::STRAIGHT;
-        if ($this->isTrips()) return self::TRIPS;
-        if ($this->isDoublePairs()) return self::DOUBLE_PAIRS;
-        if ($this->isAPair()) return self::PAIR;
-        return self::HIGH_CARD;
+        if ($this->isStraightFlush()) return "straight_flush";
+        elseif ($this->isPoker()) return "poker";
+        elseif ($this->isFullHouse()) return "full_house";
+        elseif ($this->isFlush()) return "flush";
+        elseif ($this->isStraight()) return "straight";
+        elseif ($this->isTrips()) return "trips";
+        elseif ($this->isDoublePairs()) return "double_pairs";
+        elseif ($this->isAPair()) return "pair";
+        else return "high_card";
     }
 
-    public function getOrderedCardRanks()
+    public function isTheSameHand(Hand $other_hand)
+    {
+        return $this->getOrderedCardRanks() == $other_hand->getOrderedCardRanks();
+    }
+
+    private function getOrderedCardRanks()
     {
         foreach ($this->cards as $card) {
             $result[] = $card->getCardRank();
@@ -51,7 +50,7 @@ class Hand
         return $this->getHandDistribution() == array(2,1,1,1);
     }
 
-    public function isDoublePairs()
+    private function isDoublePairs()
     {
         return $this->getHandDistribution() == array(2,2,1);
     }
@@ -61,17 +60,17 @@ class Hand
         return $this->getHandDistribution() == array(3,1,1);
     }
 
-    public function isStraight()
+    private function isStraight()
     {
         $cards = $this->getOrderedCardRanks();
-        if ($cards[4] == self::ACE) {
-            for ($i=0; $i < 3 ; $i++) {
+        if ($cards[self::LAST_RANK_POSITION] == self::ACE) {
+            for ($i=0; $i < self::NEXT_TO_LAST_RANK_POSITION ; $i++) {
                 if ($cards[$i+1] - $cards[$i] != 1)  {
                     return false;
                 }
             }
         } else {
-            for ($i=0; $i < 4 ; $i++) {
+            for ($i=0; $i < self::LAST_RANK_POSITION ; $i++) {
                 if ($cards[$i+1] - $cards[$i] != 1)  {
                     return false;
                 }
@@ -100,13 +99,6 @@ class Hand
     private function isStraightFlush()
     {
         return $this->isStraight() && $this->isFlush();
-    }
-
-
-    public function isAGroupedHand()
-    {
-        return ($this->isAPair() || $this->isTrips()
-            || $this->isFullHouse() || $this->isPoker());
     }
 
     private function getHandDistribution()
