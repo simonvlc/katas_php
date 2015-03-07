@@ -13,7 +13,10 @@ class Hand
     const FULL = 7;
     const POKER = 8;
     const STRAIGHT_FLUSH = 9;
+
     const ACE = 14;
+    const LAST_RANK_POSITION_IN_HAND = 4;
+    const NEXT_TO_LAST_RANK_POSITION_IN_HAND = 3;
 
     private $cards = array();
 
@@ -64,14 +67,14 @@ class Hand
     public function isStraight()
     {
         $cards = $this->getOrderedCardRanks();
-        if ($cards[4] == self::ACE) {
-            for ($i=0; $i < 3 ; $i++) {
+        if ($cards[self::LAST_RANK_POSITION_IN_HAND] == self::ACE) {
+            for ($i=0; $i < self::NEXT_TO_LAST_RANK_POSITION_IN_HAND ; $i++) {
                 if ($cards[$i+1] - $cards[$i] != 1)  {
                     return false;
                 }
             }
         } else {
-            for ($i=0; $i < 4 ; $i++) {
+            for ($i=0; $i < self::LAST_RANK_POSITION_IN_HAND ; $i++) {
                 if ($cards[$i+1] - $cards[$i] != 1)  {
                     return false;
                 }
