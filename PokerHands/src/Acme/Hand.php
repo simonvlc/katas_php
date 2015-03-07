@@ -4,15 +4,6 @@ namespace Acme;
 
 class Hand
 {
-    const HIGH_CARD = 1;
-    const PAIR = 2;
-    const DOUBLE_PAIRS = 3;
-    const TRIPS = 4;
-    const STRAIGHT = 5;
-    const FLUSH = 6;
-    const FULL = 7;
-    const POKER = 8;
-    const STRAIGHT_FLUSH = 9;
 
     const ACE = 14;
     const LAST_RANK_POSITION_IN_HAND = 4;
@@ -29,15 +20,15 @@ class Hand
 
     public function getHandRanking()
     {
-        if ($this->isStraightFlush()) return self::STRAIGHT_FLUSH;
-        if ($this->isPoker()) return self::POKER;
-        if ($this->isFullHouse()) return self::FULL;
-        if ($this->isFlush()) return self::FLUSH;
-        if ($this->isStraight()) return self::STRAIGHT;
-        if ($this->isTrips()) return self::TRIPS;
-        if ($this->isDoublePairs()) return self::DOUBLE_PAIRS;
-        if ($this->isAPair()) return self::PAIR;
-        return self::HIGH_CARD;
+        if ($this->isStraightFlush()) return "straight_flush";
+        elseif ($this->isPoker()) return "poker";
+        elseif ($this->isFullHouse()) return "full_house";
+        elseif ($this->isFlush()) return "flush";
+        elseif ($this->isStraight()) return "straight";
+        elseif ($this->isTrips()) return "trips";
+        elseif ($this->isDoublePairs()) return "double_pairs";
+        elseif ($this->isAPair()) return "pair";
+        else return "high_card";
     }
 
     public function getOrderedCardRanks()
@@ -54,7 +45,7 @@ class Hand
         return $this->getHandDistribution() == array(2,1,1,1);
     }
 
-    public function isDoublePairs()
+    private function isDoublePairs()
     {
         return $this->getHandDistribution() == array(2,2,1);
     }
@@ -64,7 +55,7 @@ class Hand
         return $this->getHandDistribution() == array(3,1,1);
     }
 
-    public function isStraight()
+    private function isStraight()
     {
         $cards = $this->getOrderedCardRanks();
         if ($cards[self::LAST_RANK_POSITION_IN_HAND] == self::ACE) {
@@ -103,13 +94,6 @@ class Hand
     private function isStraightFlush()
     {
         return $this->isStraight() && $this->isFlush();
-    }
-
-
-    public function isAGroupedHand()
-    {
-        return ($this->isAPair() || $this->isTrips()
-            || $this->isFullHouse() || $this->isPoker());
     }
 
     private function getHandDistribution()
