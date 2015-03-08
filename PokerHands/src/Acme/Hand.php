@@ -4,10 +4,9 @@ namespace Acme;
 
 class Hand
 {
-
     const ACE = 14;
-    const LAST_RANK_POSITION_IN_HAND = 4;
-    const NEXT_TO_LAST_RANK_POSITION_IN_HAND = 3;
+    const LAST_RANK_IN_HAND = 4;
+    const NEXT_TO_LAST_RANK_IN_HAND = 3;
 
     private $cards = array();
 
@@ -31,7 +30,40 @@ class Hand
         else return "high_card";
     }
 
-    public function getOrderedCardRanks()
+    public function isTied(Hand $other_hand)
+    {
+        return $this->orderedCardRanksInHand() == $other_hand->orderedCardRanksInHand();
+    }
+
+    public function hasTheSameTopRank(Hand $other_hand)
+    {
+        return $this->getTopRank() == $other_hand->getTopRank();
+    }
+
+    public function hasTheSameSecondRank(Hand $other_hand)
+    {
+        return $this->getSecondRank() == $other_hand->getSecondRank();
+    }
+
+    public function compareTopRank(Hand $other_hand)
+    {
+        return ($this->getTopRank() > $other_hand->getTopRank()
+            ? $this : $other_hand);
+    }
+
+    public function compareSecondRank(Hand $other_hand)
+    {
+        return ($this->getSecondRank() > $other_hand->getSecondRank()
+            ? $this : $other_hand);
+    }
+
+    public function compareThirdRank(Hand $other_hand)
+    {
+        return ($this->getThirdRank() > $other_hand->getThirdRank()
+            ? $this : $other_hand);
+    }
+
+    private function orderedCardRanksInHand()
     {
         foreach ($this->cards as $card) {
             $result[] = $card->getCardRank();
@@ -57,15 +89,15 @@ class Hand
 
     private function isStraight()
     {
-        $cards = $this->getOrderedCardRanks();
-        if ($cards[self::LAST_RANK_POSITION_IN_HAND] == self::ACE) {
-            for ($i=0; $i < self::NEXT_TO_LAST_RANK_POSITION_IN_HAND ; $i++) {
+        $cards = $this->orderedCardRanksInHand();
+        if ($cards[self::LAST_RANK_IN_HAND] == self::ACE) {
+            for ($i=0; $i < self::NEXT_TO_LAST_RANK_IN_HAND ; $i++) {
                 if ($cards[$i+1] - $cards[$i] != 1)  {
                     return false;
                 }
             }
         } else {
-            for ($i=0; $i < self::LAST_RANK_POSITION_IN_HAND ; $i++) {
+            for ($i=0; $i < self::LAST_RANK_IN_HAND ; $i++) {
                 if ($cards[$i+1] - $cards[$i] != 1)  {
                     return false;
                 }
@@ -98,31 +130,31 @@ class Hand
 
     private function getHandDistribution()
     {
-        $ranks = array_count_values($this->getOrderedCardRanks());
+        $ranks = array_count_values($this->orderedCardRanksInHand());
         arsort($ranks);
         return array_values($ranks);
     }
 
     private function getDistributedRanksInHand()
     {
-        $ranks = array_count_values($this->getOrderedCardRanks());
+        $ranks = array_count_values($this->orderedCardRanksInHand());
         arsort($ranks);
         return array_keys($ranks);
     }
 
-    public function getTopRank()
+    private function getTopRank()
     {
         $ranks = $this->getDistributedRanksInHand();
         return $ranks[0];
     }
 
-    public function getSecondRank()
+    private function getSecondRank()
     {
         $ranks = $this->getDistributedRanksInHand();
         return $ranks[1];
     }
 
-    public function getThirdRank()
+    private function getThirdRank()
     {
         $ranks = $this->getDistributedRanksInHand();
         return $ranks[2];

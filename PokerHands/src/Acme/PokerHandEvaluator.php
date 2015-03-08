@@ -58,7 +58,7 @@ class PokerHandEvaluator
                 return $this->compareStraights();
                 break;
             default:
-                return $this->compareRegularHands();
+                return $this->hand1->compareTopRank($this->hand2);
                 break;
         }
     }
@@ -86,41 +86,37 @@ class PokerHandEvaluator
 
     private function compareStraights()
     {
-        return ($this->hand1->getSecondRank()
-            > $this->hand2->getSecondRank() ? $this->hand1 : $this->hand2);
+        return $this->hand1->compareSecondRank($this->hand2);
     }
 
     private function isATie()
     {
-        return $this->hand1->getOrderedCardRanks() == $this->hand2->getOrderedCardRanks();
+        return $this->hand1->isTied($this->hand2);
     }
 
     private function isPairedForTopRank()
     {
-        return $this->hand1->getTopRank() == $this->hand2->getTopRank();
+        return $this->hand1->hasTheSameTopRank($this->hand2);
     }
 
     private function isPairedForSecondRank()
     {
-        return $this->hand1->getSecondRank() == $this->hand2->getSecondRank();
+        return $this->hand1->hasTheSameSecondRank($this->hand2);
     }
 
     private function getHandWithTheHighestKicker()
     {
-        return ($this->hand1->getThirdRank() > $this->hand2->getThirdRank()
-            ? $this->hand1 : $this->hand2);
+        return $this->hand1->compareThirdRank($this->hand2);
     }
 
     private function getHandWithTheHighestSecondRank()
     {
-        return ($this->hand1->getSecondRank()
-                > $this->hand2->getSecondRank() ? $this->hand1 : $this->hand2);
+        return $this->hand1->compareSecondRank($this->hand2);
     }
 
     private function compareRegularHands()
     {
-        return ($this->hand1->getTopRank()
-            > $this->hand2->getTopRank() ? $this->hand1 : $this->hand2);
+        return $this->hand1->compareTopRank($this->hand2);
     }
 
     private function getBestHand()
