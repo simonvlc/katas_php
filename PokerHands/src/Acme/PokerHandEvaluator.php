@@ -4,19 +4,18 @@ namespace Acme;
 
 class PokerHandEvaluator
 {
+    const HIGH_CARD = 1;
+    const PAIR = 2;
+    const DOUBLE_PAIR = 3;
+    const TRIPS = 4;
+    const STRAIGHT = 5;
+    const FLUSH = 6;
+    const FULL_HOUSE = 7;
+    const POKER = 8;
+    const STRAIGHT_FLUSH = 9;
+
     private $hand1;
     private $hand2;
-    private $hand_rankings_to_value_lookup = array(
-        "high_card" => 1,
-        "pair" => 2,
-        "double_pairs" => 3,
-        "trips" => 4,
-        "straight" => 5,
-        "flush" => 6,
-        "full_house" => 7,
-        "poker" => 8,
-        "straight_flush" => 9
-    );
 
     public function __construct(Hand $hand1, Hand $hand2)
     {
@@ -30,31 +29,45 @@ class PokerHandEvaluator
             return "Tie.";
         }
 
-        if ($this->handsHaveSameRank()) {
+        if ($this->handsHaveSameRanking()) {
             return $this->compareHandsWithTheSameRank();
         }
 
-        return $this->getBestHand();
+        return $this->handWithTheHighestRanking();
     }
 
-    private function handsHaveSameRank()
+    private function computeHandRanking(Hand $hand)
     {
-        return $this->hand1->getHandRanking() == $this->hand2->getHandRanking();
+        if ($hand->isStraightFlush()) return self::STRAIGHT_FLUSH;
+        elseif ($hand->isPoker()) return self::POKER;
+        elseif ($hand->isFullHouse()) return self::FULL_HOUSE;
+        elseif ($hand->isFlush()) return self::FLUSH;
+        elseif ($hand->isStraight()) return self::STRAIGHT;
+        elseif ($hand->isTrips()) return self::TRIPS;
+        elseif ($hand->isDoublePairs()) return self::DOUBLE_PAIR;
+        elseif ($hand->isAPair()) return self::PAIR;
+        else return self::HIGH_CARD;
+    }
+
+    private function handsHaveSameRanking()
+    {
+        return $this->computeHandRanking($this->hand1)
+            == $this->computeHandRanking($this->hand2);
     }
 
     private function compareHandsWithTheSameRank()
     {
-        switch ($this->hand1->getHandRanking()) {
-            case 'pair':
-            case 'trips':
-            case 'full_house':
-            case 'poker':
+        switch ($this->computeHandRanking($this->hand1)) {
+            case self::PAIR:
+            case self::TRIPS:
+            case self::FULL_HOUSE:
+            case self::POKER:
                 return $this->compareGroupedHands();
                 break;
-            case 'double_pairs':
+            case self::DOUBLE_PAIR:
                 return $this->compareDoublePairs();
                 break;
-            case 'straight':
+            case self::STRAIGHT:
                 return $this->compareStraights();
                 break;
             default:
@@ -119,10 +132,10 @@ class PokerHandEvaluator
         return $this->hand1->compareTopRank($this->hand2);
     }
 
-    private function getBestHand()
+    private function handWithTheHighestRanking()
     {
-        return ($this->hand_rankings_to_value_lookup[$this->hand1->getHandRanking()]
-            > $this->hand_rankings_to_value_lookup[$this->hand2->getHandRanking()]
+        return ($this->computeHandRanking($this->hand1)
+            > $this->computeHandRanking($this->hand2)
             ? $this->hand1 : $this->hand2);
     }
 }
