@@ -1,0 +1,103 @@
+<?php
+
+namespace Acme;
+
+class Card
+{
+	protected $label, $value;
+
+	public function __construct($label, $value)
+	{
+		$this->label = $label;
+		$this->value = $value;
+	}
+
+	public function equals(Card $other_card)
+	{
+		return $this->label == $other_card->label;
+	}
+
+	public function greaterThan(Card $other_card)
+	{
+		return $this->value > $other_card->value;
+	}
+}
+
+class HandFactory
+{
+	public static function create($hand)
+	{
+		$cards = array();
+		for ($i=0; $i<strlen($hand); $i++) {
+			$label = $hand[$i];
+			$values = array(
+					'9' => 9,
+					'T' => 10,
+					'A' => 11,
+					'K' => 1
+					);
+
+			$cards[] = new Card($label, $values[$label]);
+		}
+
+		return new Hand($cards);
+	}
+}
+
+class Hand
+{
+	public $cards;
+
+	public function __construct(array $cards)
+	{
+		$this->cards = $cards;
+		$this->sortCards();
+	}
+
+	public function equals(Hand $other_hand)
+	{
+		return ($this->cards[0]->equals($other_hand->cards[0]) &&
+			$this->cards[1]->equals($other_hand->cards[1]));
+	}
+
+	public function greaterThan(Hand $other_hand)
+	{
+		if ($this->cards[0]->equals($other_hand->cards[0])) {	
+		  return $this->cards[1]->greaterThan($other_hand->cards[1]);
+		}
+		return $this->cards[0]->greaterThan($other_hand->cards[0]);
+	}
+
+	private function sortCards()
+	{
+		usort($this->cards, function($first, $second) {
+			if ($first->equals($second)) {
+				return 0;
+			}
+			if ($first->greaterThan($second)) {
+				return -1;
+			}
+			return 1;
+		});
+	}
+}
+
+class HandEvaluator
+{
+
+    public function evaluate($player_hand, $opponent_hand)
+    {
+		$player_hand_object = HandFactory::create($player_hand);
+		$opponent_hand_object = HandFactory::create($opponent_hand);
+
+		if ($player_hand_object->equals($opponent_hand_object)) {
+			return 'tie';
+		}
+
+		if ($player_hand_object->greaterThan($opponent_hand_object)) {
+			return 'player';
+		}
+
+		return 'opponent';
+	}
+}
