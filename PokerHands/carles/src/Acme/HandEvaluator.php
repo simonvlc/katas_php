@@ -4,17 +4,17 @@ namespace Acme;
 
 class Card
 {
-	protected $label, $value;
+	protected $card_number, $value;
 
-	public function __construct($label, $value)
+	public function __construct($card_number, $value)
 	{
-		$this->label = $label;
+		$this->card_number = $card_number;
 		$this->value = $value;
 	}
 
 	public function equals(Card $other_card)
 	{
-		return $this->label == $other_card->label;
+		return $this->card_number == $other_card->card_number;
 	}
 
 	public function greaterThan(Card $other_card)
@@ -25,19 +25,21 @@ class Card
 
 class HandFactory
 {
+
 	public static function create($hand)
 	{
+        $values = array(
+            '9' => 9,
+            'T' => 10,
+            'K' => 13,
+            'A' => 14
+        );
+
 		$cards = array();
 		for ($i=0; $i<strlen($hand); $i++) {
-			$label = $hand[$i];
-			$values = array(
-					'9' => 9,
-					'T' => 10,
-					'A' => 11,
-					'K' => 1
-					);
+			$card_number = $hand[$i];
 
-			$cards[] = new Card($label, $values[$label]);
+			$cards[] = new Card($card_number, $values[$card_number]);
 		}
 
 		return new Hand($cards);
@@ -46,7 +48,7 @@ class HandFactory
 
 class Hand
 {
-	public $cards;
+	private $cards;
 
 	public function __construct(array $cards)
 	{
@@ -62,7 +64,7 @@ class Hand
 
 	public function greaterThan(Hand $other_hand)
 	{
-		if ($this->cards[0]->equals($other_hand->cards[0])) {	
+		if ($this->cards[0]->equals($other_hand->cards[0])) {
 		  return $this->cards[1]->greaterThan($other_hand->cards[1]);
 		}
 		return $this->cards[0]->greaterThan($other_hand->cards[0]);

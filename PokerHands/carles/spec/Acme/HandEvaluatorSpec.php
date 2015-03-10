@@ -12,28 +12,35 @@ class HandEvaluatorSpec extends ObjectBehavior
 	{
 		$result = $this->evaluate('AA', 'AA');
 
-		$result->shouldEqual('tie');	
+		$result->shouldEqual('tie');
 	}
 
 	public function it_returns_ace_pair_wins_vs_kings_pair()
 	{
 		$result = $this->evaluate('AA', 'KK');
 
-		$result->shouldEqual('player');	
+		$result->shouldEqual('player');
 	}
 
-	public function it_king_ace_beats_king_nine()
+	public function it_returns_player_wins_for_KA_vs_K9()
 	{
 		$result = $this->evaluate('KA', 'K9');
 
-		$result->shouldEqual('player');	
+		$result->shouldEqual('player');
 	}
-	
-	public function it_returns_opponent_win_for_k9_vs_ak()
+
+	public function it_returns_opponent_win_for_K9_vs_9K()
 	{
 		$result = $this->evaluate('K9', '9K');
 
-		$result->shouldEqual('tie');	
+		$result->shouldEqual('tie');
 	}
+
+    public function it_returns_player_wins_for_22_vs_AK()
+    {
+        $result = $this->evaluate('22', 'AK');
+
+        $result->shouldEqual('player');
+    }
 
 }
