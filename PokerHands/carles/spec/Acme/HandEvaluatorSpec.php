@@ -57,11 +57,11 @@ class HandEvaluatorSpec extends ObjectBehavior
         $result->shouldEqual('opponent');
     }
 
-    public function it_returns_player_wins_for_AAJ_vs_AAQ()
+    public function it_returns_player_wins_for_AAK_vs_AAQ()
     {
-        $result = $this->evaluate('AAJ', 'AAQ');
+        $result = $this->evaluate('AAK', 'AAQ');
 
-        $result->shouldEqual('opponent');
+        $result->shouldEqual('player');
     }
 
 }
