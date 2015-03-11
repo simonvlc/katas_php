@@ -29,6 +29,7 @@ class HandFactory
 	public static function create($hand)
 	{
         $values = array(
+            '2' => 2,
             '9' => 9,
             'T' => 10,
             'K' => 13,
@@ -48,13 +49,20 @@ class HandFactory
 
 class Hand
 {
-	private $cards;
+	private $cards, $type;
 
 	public function __construct(array $cards)
 	{
 		$this->cards = $cards;
 		$this->sortCards();
+        $this->type = $this->evaluate();
 	}
+
+    private function evaluate()
+    {
+        if ($this->cards[0]->equals($this->cards[1])) return "pair";
+        return "highcard";
+    }
 
 	public function equals(Hand $other_hand)
 	{
@@ -64,6 +72,8 @@ class Hand
 
 	public function greaterThan(Hand $other_hand)
 	{
+        if ($this->type == "pair") return $this;
+
 		if ($this->cards[0]->equals($other_hand->cards[0])) {
 		  return $this->cards[1]->greaterThan($other_hand->cards[1]);
 		}
