@@ -43,4 +43,25 @@ class HandEvaluatorSpec extends ObjectBehavior
         $result->shouldEqual('player');
     }
 
+    public function it_returns_opponent_wins_for_AK_vs_33()
+    {
+        $result = $this->evaluate('AK', '33');
+
+        $result->shouldEqual('opponent');
+    }
+
+    public function it_returns_player_wins_for_33_vs_44()
+    {
+        $result = $this->evaluate('33', '44');
+
+        $result->shouldEqual('opponent');
+    }
+
+    public function it_returns_player_wins_for_AAJ_vs_AAQ()
+    {
+        $result = $this->evaluate('AAJ', 'AAQ');
+
+        $result->shouldEqual('opponent');
+    }
+
 }

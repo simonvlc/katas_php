@@ -30,8 +30,16 @@ class HandFactory
 	{
         $values = array(
             '2' => 2,
+            '3' => 3,
+            '4' => 4,
+            '5' => 5,
+            '6' => 6,
+            '7' => 7,
+            '8' => 8,
             '9' => 9,
             'T' => 10,
+            'J' => 11,
+            'Q' => 12,
             'K' => 13,
             'A' => 14
         );
@@ -51,6 +59,9 @@ class Hand
 {
 	private $cards, $type;
 
+    const HIGHCARD = 1;
+    const PAIR = 2;
+
 	public function __construct(array $cards)
 	{
 		$this->cards = $cards;
@@ -60,8 +71,8 @@ class Hand
 
     private function evaluate()
     {
-        if ($this->cards[0]->equals($this->cards[1])) return "pair";
-        return "highcard";
+        if ($this->cards[0]->equals($this->cards[1])) return self::PAIR;
+        return self::HIGHCARD;
     }
 
 	public function equals(Hand $other_hand)
@@ -72,7 +83,11 @@ class Hand
 
 	public function greaterThan(Hand $other_hand)
 	{
-        if ($this->type == "pair") return $this;
+        if ($this->type > $other_hand->type) {
+            return true;
+        } elseif ($this->type < $other_hand->type) {
+            return false;
+        }
 
 		if ($this->cards[0]->equals($other_hand->cards[0])) {
 		  return $this->cards[1]->greaterThan($other_hand->cards[1]);
