@@ -77,8 +77,12 @@ class Hand
 
 	public function equals(Hand $other_hand)
 	{
-		return ($this->cards[0]->equals($other_hand->cards[0]) &&
-			$this->cards[1]->equals($other_hand->cards[1]));
+        for ($i=0; $i < count($this->cards); $i++) {
+            if (!$this->cards[$i]->equals($other_hand->cards[$i])) {
+                return false;
+            }
+        }
+        return true;
 	}
 
 	public function greaterThan(Hand $other_hand)
