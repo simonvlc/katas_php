@@ -1,0 +1,7 @@
+.vagrant
+vendor
+node_modules
+.DS_Store
+composer.phar
+*.sublime*
+*.lock
